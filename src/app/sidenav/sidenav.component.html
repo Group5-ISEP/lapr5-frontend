@@ -1,0 +1,23 @@
+<div class="example-container" *ngIf="shouldRun">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()" id="showSidenav">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="example-app-name">Bus Information System</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav #snav>
+      <mat-nav-list class="List">
+        <a mat-list-item [routerLink]="nav.route" (click)="snav.toggle()" *ngFor="let nav of fillerNav" id={{nav.name}}>
+          <mat-icon class="icon">{{nav.icon}}</mat-icon>
+          {{nav.name}}
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
