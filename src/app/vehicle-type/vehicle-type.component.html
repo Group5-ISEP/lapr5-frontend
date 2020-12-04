@@ -1,0 +1,54 @@
+<div class="create-vehicle-container">
+  <h2>Create a type of vehicle</h2>
+  <form [formGroup]="vehicle" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" id="name">
+      <mat-error *ngIf="vehicle.value.name.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Autonomy</mat-label>
+      <input matInput formControlName="autonomy" id="autonomy">
+      <mat-error *ngIf="vehicle.value.autonomy.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cost per KM</mat-label>
+      <input matInput formControlName="costByKm" id="costByKm">
+      <mat-error *ngIf="vehicle.value.costByKm.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Average consumption</mat-label>
+      <input matInput formControlName="averageConsumption" id="averageConsumption">
+      <mat-error *ngIf="vehicle.value.averageConsumption.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Average speed</mat-label>
+      <input matInput formControlName="averageSpeed" id="averageSpeed">
+      <mat-error *ngIf="vehicle.value.averageSpeed.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Emissions</mat-label>
+      <input matInput formControlName="emissions" id="emissions">
+      <mat-error *ngIf="vehicle.value.emissions.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Energy source</mat-label>
+      <mat-select formControlName="energySource" id="energySource">
+        <mat-option value="Diesel">Diesel</mat-option>
+        <mat-option value="Gasoline">Gasoline</mat-option>
+        <mat-option value="Electric">Electric</mat-option>
+        <mat-option value="GPL">GPL</mat-option>
+        <mat-option value="Gas">Gas</mat-option>
+      </mat-select>
+      <mat-error *ngIf="vehicle.value.energySource.invalid"></mat-error>
+    </mat-form-field>
+    <div></div>
+    <button mat-button color="primary" id="createButton">Create</button>
+  </form>
+</div>

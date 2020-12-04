@@ -1,0 +1,20 @@
+.create-vehicle-container {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+  /*background-color: deepskyblue;*/
+}
+h2 {
+    color: black;
+}
+
+/*
+button {
+    display: inline-block;
+}
+*/
+math-form-field {
+    margin: auto;
+    width: 30%;
+    display: inline-block;
+}
