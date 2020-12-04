@@ -4,15 +4,16 @@
   text-align: center;
   /*background-color: deepskyblue;*/
 }
+
 h2 {
     color: black;
 }
 
-/*
 button {
-    display: inline-block;
+    outline: 2px;
+    outline-color: black;
 }
-*/
+
 math-form-field {
     margin: auto;
     width: 30%;

@@ -13,7 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input'; 
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button'; 
 
 import { LoginComponent } from './login/login.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -56,7 +57,8 @@ import { MapComponent } from './map/map.component';
     ReactiveFormsModule,
     MatInputModule,
     HttpClientModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule
   ],
 //  providers: [],
   bootstrap: [AppComponent]
