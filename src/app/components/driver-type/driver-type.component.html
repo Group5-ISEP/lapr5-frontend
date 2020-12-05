@@ -1,0 +1,12 @@
+<div class="create-driver-container">
+  <h2>Create a type of driver</h2>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput [formControl]="driverdesc" id="desc"></textarea>
+      <mat-error *ngIf="driverdesc.invalid"></mat-error>
+    </mat-form-field>
+    <div></div>
+    <button mat-raised-button color="primary" id="createButton">Create</button>
+  </form>
+</div>

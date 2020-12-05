@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { VehicleTypeService } from '../vehicle-type.service';
+import { VehicleTypeService } from '../../services/vehicle-type.service';
 
 export interface VehicleType {
   name: string,

@@ -1,0 +1,20 @@
+.create-driver-container {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+}
+
+h2 {
+  color: black;
+}
+
+button {
+  outline: 2px;
+  outline-color: black;
+}
+
+math-form-field {
+  margin: auto;
+  width: 30%;
+  display: inline-block;
+}
