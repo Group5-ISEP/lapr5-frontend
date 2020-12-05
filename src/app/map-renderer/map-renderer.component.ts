@@ -3,14 +3,21 @@ import { GeoCoordinates } from '@here/harp-geoutils';
 import { MapControls } from '@here/harp-map-controls';
 import { MapAnchor, MapView } from '@here/harp-mapview';
 import * as THREE from 'three';
+import Line from '../domain/Line';
 import Node from '../domain/Node';
+import Path from '../domain/Path';
+import { LineService } from '../line.service';
 import { NodeService } from '../node.service';
+import { PathService } from '../path.service';
+import { distanceBetween2GeoPoints, inclinationOfLineBetween2Points, rgbToHex } from './utils';
 
 //interface to use harp CDN specified in the index.html
 declare var harp: any;
 
 interface NetworkData {
-  nodes: Node[]
+  nodes: Node[],
+  lines: Line[],
+  paths: Path[]
 }
 
 
@@ -27,9 +34,13 @@ export class MapRendererComponent implements OnInit {
 
   private map: MapView
   private mapControls: MapControls
-  private networkData: NetworkData = { nodes: [] }
+  private networkData: NetworkData = { nodes: [], lines: [], paths: [] }
 
-  constructor(private nodeService: NodeService) { }
+  constructor(
+    private nodeService: NodeService,
+    private lineService: LineService,
+    private pathService: PathService
+  ) { }
 
 
   ngOnInit() {
@@ -135,6 +146,8 @@ export class MapRendererComponent implements OnInit {
     /**
      * Each fetch requests rendering so that it doesnt have to wait for the whole
      * data to be fetched, it renders as each part is fetched
+     * 
+     * The fetches are chained
      */
 
     this.nodeService.getNodes().subscribe(
@@ -142,6 +155,21 @@ export class MapRendererComponent implements OnInit {
         this.networkData.nodes = nodes;
         console.log("fetched")
         this.renderNetwork()
+
+        this.lineService.getLines().subscribe(
+          lines => {
+            console.log("lines fetched")
+            this.networkData.lines = lines
+
+            this.pathService.getPaths().subscribe(
+              paths => {
+                console.log("paths fetched")
+                this.networkData.paths = paths
+
+                this.renderNetwork()
+              }
+            )
+          })
       })
   }
 
@@ -182,18 +210,72 @@ export class MapRendererComponent implements OnInit {
    */
   private renderNetwork() {
     console.log("RENDER CALLED")
-    //TODO: implement render
+
     this.map.mapAnchors.clear()
 
-    const geometry = new THREE.CircleGeometry(100);
-    const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
+    const drawNodes = () => {
+      const geometry = new THREE.CircleGeometry(100);
+      const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
 
-    this.networkData.nodes.forEach(node => {
-      const cube: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
-      cube.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
-      cube.renderOrder = 100000;
-      this.map.mapAnchors.add(cube)
-    });
+      this.networkData.nodes.forEach(node => {
+        const cube: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
+        cube.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
+        cube.renderOrder = 100000;
+        this.map.mapAnchors.add(cube)
+      });
+    }
+
+    const drawSegments = () => {
+
+      //TODO: deal with overlapping
+
+      this.networkData.paths.forEach(path => {
+        let { red, green, blue } = this.networkData.lines.find(line => line.code === path.lineCode).colorRGB
+
+        let hexColor = rgbToHex(red, green, blue)
+
+        let segments = path.segmentList
+        for (let order = 1; order <= segments.length; order++) {
+          const segment = segments.find(seg => seg.order === order)
+          const startNode = this.networkData.nodes.find(node => node.shortname === segment.startNode)
+          const endNode = this.networkData.nodes.find(node => node.shortname === segment.endNode)
+
+          const distance = distanceBetween2GeoPoints(startNode.latitude, startNode.longitude, endNode.latitude, endNode.longitude)
+          const angle = inclinationOfLineBetween2Points(startNode.latitude, startNode.longitude, endNode.latitude, endNode.longitude)
+
+          console.log("distance:" + distance)
+          console.log("angle:" + angle)
+
+          //Points
+          const points = [];
+          //First point of the segment
+          points.push(new THREE.Vector3(0, 0, 0));
+          //Second point of the segment
+          const x = Math.cos(angle) * distance
+          const y = Math.sin(angle) * distance
+          console.log("x:" + x)
+          console.log("y:" + y)
+          points.push(new THREE.Vector3(x, y, 0))
+
+          // geometry of segment from points
+          const geometry = new THREE.BufferGeometry().setFromPoints(points);
+          // material for segment with line color
+          const material = new THREE.LineBasicMaterial({ color: hexColor });
+
+          //FIXME: segments not being in the right position
+          // Segment mesh
+          const line: MapAnchor<THREE.Line> = new THREE.Line(geometry, material);
+          line.anchor = new GeoCoordinates(startNode.latitude, startNode.longitude, 10); //attach to start node position
+          line.renderOrder = 9999
+
+          this.map.mapAnchors.add(line)
+        }
+      });
+
+    }
+
+    drawNodes()
+    drawSegments()
 
     this.map.update()
 
