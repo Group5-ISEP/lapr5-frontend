@@ -9,6 +9,7 @@ export class NodeService {
 
   mockNodes: Node[] = [
     { shortname: "EZC", name: "Ezequiel Campos", latitude: 41.173550, longitude: -8.654367, isDepot: false, isReliefPoint: false },
+    { shortname: "FTM", name: "Fonte da Moura", latitude: 41.163600, longitude: -8.662947, isDepot: false, isReliefPoint: false },
     { shortname: "BOAV", name: "Boavista", latitude: 41.157978, longitude: -8.629242, isDepot: false, isReliefPoint: true },
   ]
 
