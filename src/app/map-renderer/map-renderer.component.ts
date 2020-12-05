@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { GeoCoordinates } from '@here/harp-geoutils';
 import { MapControls } from '@here/harp-map-controls';
-import { MapView } from '@here/harp-mapview';
+import { MapAnchor, MapView } from '@here/harp-mapview';
 import * as THREE from 'three';
+import Node from '../domain/Node';
+import { NodeService } from '../node.service';
 
 //interface to use harp CDN specified in the index.html
 declare var harp: any;
+
+interface NetworkData {
+  nodes: Node[]
+}
 
 
 //TODO: clean the code
@@ -19,26 +26,21 @@ export class MapRendererComponent implements OnInit {
   state = { environment3D: false }
 
   private map: MapView
-
-
   private mapControls: MapControls
+  private networkData: NetworkData = { nodes: [] }
+
+  constructor(private nodeService: NodeService) { }
 
 
+  ngOnInit() {
 
-  constructor() { }
-
-
-  async ngOnInit() {
-
-    //TODO: async fetch the network info
-
-    await this.initMapView()
-    await this.initCameraTarget()
-    await this.initMapControls()
+    this.initMapView()
+    this.initCameraTarget()
+    this.initMapControls()
     this.initSideBar() //init UI side bar for map controls
-
     this.setHandlers()
     this.initMapDataSource()
+    this.initNetworkData()
     this.set2DEnvironment() //inicialize 2D environment
   }
 
@@ -108,6 +110,9 @@ export class MapRendererComponent implements OnInit {
     buttonDiv.replaceChild(newButton, toggleTiltButton)
   }
 
+  /**
+   * Sets all handlers
+   */
   private async setHandlers() {
     window.onresize = () => this.map.resize(window.innerWidth, window.innerHeight);
   }
@@ -126,8 +131,18 @@ export class MapRendererComponent implements OnInit {
    * Fetches network data (nodes, lines, paths, etc.)
    */
   private initNetworkData() {
-    //TODO: implement fetch network data
     console.log("FETCHED NETWORK DATA")
+    /**
+     * Each fetch requests rendering so that it doesnt have to wait for the whole
+     * data to be fetched, it renders as each part is fetched
+     */
+
+    this.nodeService.getNodes().subscribe(
+      nodes => {
+        this.networkData.nodes = nodes;
+        console.log("fetched")
+        this.renderNetwork()
+      })
   }
 
 
@@ -161,9 +176,27 @@ export class MapRendererComponent implements OnInit {
     this.renderNetwork() //trigger rerender
   }
 
+
+  /**
+   * ONLY RENDERS 2D FOR NOW!!!!!!!!!!
+   */
   private renderNetwork() {
     console.log("RENDER CALLED")
     //TODO: implement render
+    this.map.mapAnchors.clear()
+
+    const geometry = new THREE.CircleGeometry(100);
+    const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
+
+    this.networkData.nodes.forEach(node => {
+      const cube: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
+      cube.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
+      cube.renderOrder = 100000;
+      this.map.mapAnchors.add(cube)
+    });
+
+    this.map.update()
+
   }
 
 }
