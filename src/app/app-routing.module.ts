@@ -9,9 +9,8 @@ import { LineComponent } from './components/line/line.component';
 import { PathComponent } from './components/path/path.component';
 import { DriverTypeComponent } from './components/driver-type/driver-type.component';
 import { VehicleTypeComponent } from './components/vehicle-type/vehicle-type.component';
-import { MapComponent } from './components/map/map.component';
 import { LoginComponent } from './components/login/login.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { MapComponent } from './components/map/map.component';
 
 
 const appRoutes: Routes = [
