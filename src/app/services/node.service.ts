@@ -10,7 +10,7 @@ export class NodeService {
   constructor(private http: HttpClient) { }
 
   create(node: INode) {
-    console.log("Creating node with:\n");
+    console.log("Creating node with:");
     console.log(node);
     return this.http.post('http://localhost:3000/api/node', node);
   }

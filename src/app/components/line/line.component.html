@@ -1,1 +1,56 @@
-<p>line works!</p>
+<div class="create-line-container">
+
+  <h1>------------ UNDER DEVELOPMENT ------------</h1>
+
+  <h2>Create a line</h2>
+  <form [formGroup]="line" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Code</mat-label>
+      <input matInput formControlName="code">
+      <mat-error *ngIf="line.value.code.invalid">Cannot be blank</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="line.value.name.invalid"></mat-error>
+    </mat-form-field>
+
+    <div></div>
+
+    <!-- Show a list of existing nodes and add multiselect option -->
+    <!--mat-form-field appearance="outline">
+      <mat-label>Select the terminal nodes</mat-label>
+      <mat-select formControlName="terminalNodes">
+        <mat-option value="true">Yes</mat-option>
+        <mat-option value="false">No</mat-option>
+      </mat-select>
+      <mat-error *ngIf="line.value.terminalNodes.invalid"></mat-error>
+    </!--mat-form-field-->
+
+    <div></div>
+
+    <p>Select the components of the color (Red Green and Blue)</p>
+
+    <mat-form-field appearance="outline">
+      <mat-label>component R of color</mat-label>
+      <input matInput formControlName="colorR" />
+      <mat-error *ngIf="line.value.colorR.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>component G of color</mat-label>
+      <input matInput formControlName="colorG" />
+      <mat-error *ngIf="line.value.colorG.invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>component B of color</mat-label>
+      <input matInput formControlName="colorB" />
+      <mat-error *ngIf="line.value.colorB.invalid"></mat-error>
+    </mat-form-field>
+
+    <div></div>
+    <button mat-raised-button disabled color="primary" id="createButton">Create</button>
+  </form>
+</div>
