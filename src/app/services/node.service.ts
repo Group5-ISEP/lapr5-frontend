@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { INode } from '../components/node/node.component';
 import Node from '../domain/Node';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,13 +21,14 @@ export class NodeService {
 
   //TODO: URL in CONFIG file
   create(node: INode) {
-    console.log("Creating node with:\n");
+    console.log("Creating node with:");
     console.log(node);
     return this.http.post('http://localhost:3000/api/node', node);
   }
 
   //TODO: IMPLEMENT HTTP
   getNodes(): Observable<Node[]> {
-    return of(this.mockNodes)
+    //return of(this.mockNodes)
+    return this.http.get<Node[]>(environment.masterDataURL + '/api/node')
   }
 }

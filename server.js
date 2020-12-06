@@ -1,8 +1,6 @@
-const config = require('./config')
-
 const express = require('express')
 const app = express()
-const port = config.port
+const port = parseInt(process.env.PORT, 10) || 3000
 
 app.use(express.static('./dist/G5-FrontEnd'));
 

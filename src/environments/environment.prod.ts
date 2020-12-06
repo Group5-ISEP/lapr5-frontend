@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  masterDataURL: 'https://lapr5-3di-g5-masterdata.herokuapp.com/'
 };

@@ -150,7 +150,10 @@ export class MapComponent implements OnInit {
     this.nodeService.getNodes().subscribe(
       nodes => {
         this.networkData.nodes = nodes;
-        console.log("fetched")
+        console.log("fetched:" + nodes)
+        console.log(nodes[0])
+        console.log(nodes[1])
+        console.log(nodes[2])
         this.renderNetwork()
 
         this.lineService.getLines().subscribe(
@@ -214,7 +217,11 @@ export class MapComponent implements OnInit {
       const geometry = new THREE.CircleGeometry(50);
       const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
 
+      //FIXME: nodes in fetch are ok but here they are undefined
+      console.log("NODES:" + this.networkData.nodes[1])
+
       this.networkData.nodes.forEach(node => {
+        console.log("DEBIG")
         const cube: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
         cube.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
         cube.renderOrder = 100000;
@@ -232,9 +239,10 @@ export class MapComponent implements OnInit {
         let hexColor = rgbToHex(red, green, blue)
 
         let segments = path.segmentList
+        console.log("LENGTH:" + segments.length)
         for (let order = 1; order <= segments.length; order++) {
           const segment = segments.find(seg => seg.order === order)
-          const startNode = this.networkData.nodes.find(node => node.shortname === segment.startNode)
+          const startNode = this.networkData.nodes.find(node => node.shortname === segment.startNode) //FIXME - NOT FINDING THE STARTNODE AND ENDNODE
           const endNode = this.networkData.nodes.find(node => node.shortname === segment.endNode)
 
           const distance = distanceBetween2GeoPoints(startNode.latitude, startNode.longitude, endNode.latitude, endNode.longitude)
@@ -272,7 +280,7 @@ export class MapComponent implements OnInit {
     }
 
     drawNodes()
-    drawSegments()
+    //TODO:drawSegments()
 
     this.map.update()
 
