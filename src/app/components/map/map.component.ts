@@ -10,8 +10,6 @@ import { NodeService } from 'src/app/services/node.service';
 import { PathService } from 'src/app/services/path.service';
 import * as THREE from 'three';
 
-import { distanceBetween2GeoPoints, inclinationOfLineBetween2Points, rgbToHex } from './utils';
-
 //interface to use harp CDN specified in the index.html
 declare var harp: any;
 
@@ -147,6 +145,7 @@ export class MapComponent implements OnInit {
      * The fetches are chained
      */
 
+    //TODO - optimize render call
     this.nodeService.getNodes().subscribe(
       nodes => {
         this.networkData.nodes = nodes;
@@ -225,7 +224,8 @@ export class MapComponent implements OnInit {
       this.networkData.paths.forEach(path => {
         let { red, green, blue } = this.networkData.lines.find(line => line.code === path.lineCode).colorRGB
 
-        let hexColor = rgbToHex(red, green, blue)
+        // material for segments with line color
+        const material = new THREE.LineBasicMaterial({ color: new THREE.Color(red, green, blue).getHex() });
 
         let segments = path.segmentList
         for (let order = 1; order <= segments.length; order++) {
@@ -233,29 +233,20 @@ export class MapComponent implements OnInit {
           const startNode = this.networkData.nodes.find(node => node.shortName === segment.startNode)
           const endNode = this.networkData.nodes.find(node => node.shortName === segment.endNode)
 
-          const distance = distanceBetween2GeoPoints(startNode.latitude, startNode.longitude, endNode.latitude, endNode.longitude)
-          const angle = inclinationOfLineBetween2Points(startNode.latitude, startNode.longitude, endNode.latitude, endNode.longitude)
-
-          console.log("distance:" + distance)
-          console.log("angle:" + angle)
-
-          //Points
+          //Points for Line geometry
           const points = [];
           //First point of the segment
           points.push(new THREE.Vector3(0, 0, 0));
           //Second point of the segment
-          const x = Math.cos(angle) * distance
-          const y = Math.sin(angle) * distance
-          console.log("x:" + x)
-          console.log("y:" + y)
-          points.push(new THREE.Vector3(x, y, 0))
+          let geop1 = new GeoCoordinates(startNode.latitude, startNode.longitude)
+          let geop2 = new GeoCoordinates(endNode.latitude, endNode.longitude)
+          let p1 = this.map.projection.projectPoint(geop1)
+          let p2 = this.map.projection.projectPoint(geop2)
+          points.push(new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, 0))
 
           // geometry of segment from points
           const geometry = new THREE.BufferGeometry().setFromPoints(points);
-          // material for segment with line color
-          const material = new THREE.LineBasicMaterial({ color: hexColor });
 
-          //FIXME: segments not being in the right position
           // Segment mesh
           const line: MapAnchor<THREE.Line> = new THREE.Line(geometry, material);
           line.anchor = new GeoCoordinates(startNode.latitude, startNode.longitude, 10); //attach to start node position
