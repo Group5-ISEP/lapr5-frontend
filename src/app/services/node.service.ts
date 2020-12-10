@@ -11,6 +11,9 @@ import { environment } from '../../environments/environment';
 })
 export class NodeService {
 
+  /**
+   * ONLY USE FOR TESTING PURPOSES
+   */
   mockNodes: Node[] = [
     { shortName: "EZC", name: "Ezequiel Campos", latitude: 41.173550, longitude: -8.654367, isDepot: false, isReliefPoint: false },
     { shortName: "FTM", name: "Fonte da Moura", latitude: 41.163600, longitude: -8.662947, isDepot: false, isReliefPoint: false },
@@ -19,14 +22,13 @@ export class NodeService {
 
   constructor(private http: HttpClient) { }
 
-  //TODO: URL in CONFIG file
+
   create(node: INode) {
     console.log("Creating node with:");
     console.log(node);
-    return this.http.post('http://localhost:3000/api/node', node);
+    return this.http.post(environment.masterDataURL + '/api/node', node);
   }
 
-  //TODO: IMPLEMENT HTTP
   getNodes(): Observable<Node[]> {
     //return of(this.mockNodes)
     return this.http.get<Node[]>(environment.masterDataURL + '/api/node')

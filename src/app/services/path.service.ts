@@ -1,5 +1,7 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import Path from '../domain/Path';
 
 
@@ -8,6 +10,9 @@ import Path from '../domain/Path';
 })
 export class PathService {
 
+  /**
+   * ONLY USE FOR TESTING
+   */
   mockPaths: Path[] = [
     {
       lineCode: "201",
@@ -22,10 +27,9 @@ export class PathService {
     }
   ]
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  //TODO: IMPLEMENT HTTP
-  getPaths(): Observable<Path[]> {
-    return of(this.mockPaths)
+  getPaths(lineCode: string): Observable<Path[]> {
+    return this.http.get<Path[]>(environment.masterDataURL + `/api/path/${lineCode}`)
   }
 }

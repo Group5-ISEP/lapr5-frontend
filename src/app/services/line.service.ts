@@ -3,27 +3,29 @@ import { Observable, of } from 'rxjs';
 import Line from '../domain/Line';
 import { HttpClient } from '@angular/common/http';
 import { ILine } from '../components/line/line.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LineService {
 
+  /**
+   * ONLY FOR USE IN TESTING
+   */
   mockLines: Line[] = [
     { code: "201", name: "Ezc_Boavista", allowedDriverTypes: [], allowedVehicleTypes: [], colorRGB: { red: 3, green: 252, blue: 240 }, terminalNodes: ["EZC", "BOAV"] }
   ]
 
   constructor(private http: HttpClient) { }
 
-  //TODO: IMPLEMENT HTTP
   getLines(): Observable<Line[]> {
-    return of(this.mockLines)
+    return this.http.get<Line[]>(environment.masterDataURL + '/api/lines')
   }
 
-  //TODO: change the url to use the one on CONFIG
   create(line: ILine) {
     console.log("Creating line with:");
     console.log(line);
-    return this.http.post('http://localhost:3000/api/line', line);
+    return this.http.post(environment.masterDataURL + '/api/lines', line);
   }
 }
