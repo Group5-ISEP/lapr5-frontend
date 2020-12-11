@@ -97,9 +97,4 @@ export class LineComponent implements OnInit {
     this.B = this.line.value['colorB'];
   }
 
-  selectNode(node: string) {
-    this.terminalNodes.push(node);
-    console.log("The list of selected nodes is:" + this.nodes);
-  }
-
 }
