@@ -23,7 +23,7 @@ export class NodeService {
   constructor(private http: HttpClient) { }
 
 
-  create(node: INode) {
+  create(node: Node) {
     console.log("Creating node with:");
     console.log(node);
     return this.http.post(environment.masterDataURL + '/api/node', node);

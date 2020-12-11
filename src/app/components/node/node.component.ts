@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NodeService } from '../../services/node.service';
 import Node from '../../domain/Node';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface INode {
   shortName: string,
@@ -18,6 +19,8 @@ export interface INode {
   styleUrls: ['./node.component.css']
 })
 export class NodeComponent implements OnInit {
+  displayedColumns: string[] = ['shortName', 'name', 'isDepot', 'reliefPoint', 'longitude', 'latitude'];
+  dataSource: MatTableDataSource<Node>;
 
   nodes: Node[];
 
@@ -35,6 +38,7 @@ export class NodeComponent implements OnInit {
       res => {
         this.nodes = res;
         console.log("Fetched nodes from backend");
+        this.dataSource = new MatTableDataSource<Node>(this.nodes);
       },
       err => { console.log(err); }
     );

@@ -1,18 +1,16 @@
-<div>
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{shortName}}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{name}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <p id="isDepot">Depot stop: {{isDepot}}</p>
-      <p id="isReliefPoint">Relief point stop: {{isReliefPoint}}</p>
-      <p id="longitude">Longitude: {{longitude}}</p>
-      <p id="latitude">Latitude: {{latitude}}</p>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
+<mat-card class="example-card">
+  <mat-card-header class="header">
+    <mat-card-title class="title">
+      {{name}}
+    </mat-card-title>
+    <mat-card-subtitle class="subtitle">
+      {{shortName}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p id="isDepot">Depot stop: {{isDepot}}</p>
+    <p id="isReliefPoint">Relief point stop: {{isReliefPoint}}</p>
+    <p id="longitude">Longitude: {{longitude}}</p>
+    <p id="latitude">Latitude: {{latitude}}</p>
+  </mat-card-content>
+</mat-card>

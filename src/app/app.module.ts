@@ -16,6 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion'; 
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table'; 
 
 import { LoginComponent } from './components/login/login.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -62,7 +64,9 @@ import { NodeelementComponent } from './components/nodeelement/nodeelement.compo
     HttpClientModule,
     MatSelectModule,
     MatButtonModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule,
+    MatTableModule
   ],
 //  providers: [],
   bootstrap: [AppComponent]
