@@ -1,3 +1,13 @@
+<div class="node-list-container">
+  <h2>Existing nodes</h2>
+  <mat-list class="nodes" role="list" *ngFor="let n of nodes">
+    <mat-list-item role="listitem">
+      <app-nodeelement [shortName]=n.shortName [name]=n.name [isDepot]=n.isDepot
+                           [isReliefPoint]=n.isReliefPoint [longitude]=n.longitude [latitude]=n.latitude></app-nodeelement>
+    </mat-list-item>
+  </mat-list>
+</div>
+
 <div class="create-node-container">
   <h2>Create a node</h2>
   <form [formGroup]="node" (ngSubmit)="onSubmit()">

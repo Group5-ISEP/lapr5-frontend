@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NodeService } from '../../services/node.service';
+import Node from '../../domain/Node';
 
 export interface INode {
   shortName: string,
@@ -18,6 +19,8 @@ export interface INode {
 })
 export class NodeComponent implements OnInit {
 
+  nodes: Node[];
+
   node = new FormGroup({
     shortName: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
@@ -27,7 +30,15 @@ export class NodeComponent implements OnInit {
     latitude: new FormControl('', [Validators.required])
   })
 
-  constructor(private nodeService: NodeService) { }
+  constructor(private nodeService: NodeService) {
+    this.nodeService.getNodes().subscribe(
+      res => {
+        this.nodes = res;
+        console.log("Fetched nodes from backend");
+      },
+      err => { console.log(err); }
+    );
+  }
 
   ngOnInit(): void {
   }

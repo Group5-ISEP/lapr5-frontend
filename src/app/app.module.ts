@@ -14,7 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion'; 
 
 import { LoginComponent } from './components/login/login.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -26,6 +27,7 @@ import { PathComponent } from './components/path/path.component';
 import { DriverTypeComponent } from './components/driver-type/driver-type.component';
 import { VehicleTypeComponent } from './components/vehicle-type/vehicle-type.component';
 import { MapComponent } from './components/map/map.component';
+import { NodeelementComponent } from './components/nodeelement/nodeelement.component';
 
 
 
@@ -41,7 +43,8 @@ import { MapComponent } from './components/map/map.component';
     PathComponent,
     DriverTypeComponent,
     VehicleTypeComponent,
-    MapComponent
+    MapComponent,
+    NodeelementComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,8 @@ import { MapComponent } from './components/map/map.component';
     MatInputModule,
     HttpClientModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatExpansionModule
   ],
 //  providers: [],
   bootstrap: [AppComponent]
