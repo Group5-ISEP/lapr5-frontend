@@ -14,11 +14,12 @@ import { MapComponent } from './components/map/map.component';
 
 
 const appRoutes: Routes = [
+  { path: 'map', component: MapComponent },
+  { path: '', redirectTo: '/map', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'driver', component: DriverTypeComponent },
   { path: 'vehicle', component: VehicleTypeComponent },
-  { path: 'map', component: MapComponent },
   { path: 'populate', component: PopulateComponent },
   { path: 'node', component: NodeComponent },
   { path: 'line', component: LineComponent },
