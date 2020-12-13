@@ -2,15 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VehicleTypeService } from '../../services/vehicle-type.service';
 
-export interface VehicleType {
-  name: string,
-  autonomy: number,
-  costByKm: number,
-  averageConsumption: number,
-  averageSpeed: number,
-  emissions: number,
-  energySource: string
-}
 
 @Component({
   selector: 'app-vehicle-type',

@@ -1,18 +1,19 @@
-.create-line-container {
-  text-align: center;
-}
-
 h1 {
     color: red;
 }
-
-.colorSelect {
-    width: 60px;
+.create-line-container {
+  text-align: center;
+  width: 600px;
+  margin: auto;
 }
 
 #colorPreviewButton {
     margin-left: 10px;
     display: inline-block;
+}
+
+.colorSelect {
+    width: 60px;
 }
 
 #colorPreviewSquare {
@@ -24,4 +25,10 @@ h1 {
 
 .colorSelect {
     margin: auto;
+}
+
+.form-divider {
+    width: 60%;
+    margin: auto;
+    margin-bottom: 10px;
 }

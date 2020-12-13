@@ -1,8 +1,6 @@
 <div class="create-line-container">
 
-  <h1>------------ UNDER DEVELOPMENT ------------</h1>
-
-  <h2>Create a line</h2>
+  <h2>Create new Line</h2>
   <form [formGroup]="line" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline">
       <mat-label>Code</mat-label>
@@ -16,31 +14,10 @@
       <mat-error *ngIf="line.value.name.invalid"></mat-error>
     </mat-form-field>
 
-    <div></div>
+    <mat-divider class="form-divider"></mat-divider>
 
     <!-- Show a list of existing nodes and add multiselect option -->
-    <p>Select the terminal nodes from the list below</p>
-    <!--div class="nodelist">
-    <mat-selection-list #nodelist>
-      <mat-list-option *ngFor="let n of allNodes">
-        {{n.name}}
-        ({{n.shortName}})
-        <!--app-nodeelement [shortName]=n.shortName [name]=n.name [isDepot]=n.isDepot
-                         [isReliefPoint]=n.isReliefPoint [longitude]=n.longitude [latitude]=n.latitude></app-nodeelement-->
-    <!--button mat-icon-button (click)="selectNode(n.shortName)"></!--button>
-      </mat-list-option>
-    </mat-selection-list>
-  </div-->
-    <!-->div class="nodelist">
-    <p>Select the terminal nodes from the list below</p>
-    <mat-list class="nodes" role="list" *ngFor="let n of allNodes; last as last">
-      <mat-list-item role="listitem" id="listNodes">
-        <app-nodeelement [shortName]=n.shortName [name]=n.name [isDepot]=n.isDepot
-                         [isReliefPoint]=n.isReliefPoint [longitude]=n.longitude [latitude]=n.latitude></app-nodeelement>
-        <button mat-icon-button (click)="selectNode(n.shortName)"></button>
-      </mat-list-item>
-    </mat-list>
-  </div-->
+    <h4>Terminal nodes</h4>
     <mat-form-field appearance="outline">
       <mat-label>Start Node</mat-label>
       <mat-select formControlName="terminalNode1">
@@ -57,24 +34,24 @@
       </mat-select>
     </mat-form-field>
 
-    <div></div>
+    <mat-divider class="form-divider"></mat-divider>
 
-    <p>Select the components of the color (Red Green and Blue)</p>
+    <h4>RGB color components</h4>
 
     <mat-form-field appearance="outline" class="colorSelect">
-      <mat-label>R</mat-label>
+      <mat-label>Red</mat-label>
       <input matInput type="number" formControlName="colorR" />
       <mat-error *ngIf="line.value.colorR.invalid"></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="colorSelect">
-      <mat-label>G</mat-label>
+      <mat-label>Green</mat-label>
       <input matInput type="number" formControlName="colorG" />
       <mat-error *ngIf="line.value.colorG.invalid"></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="colorSelect">
-      <mat-label>B</mat-label>
+      <mat-label>Blue</mat-label>
       <input matInput type="number" formControlName="colorB" />
       <mat-error *ngIf="line.value.colorB.invalid"></mat-error>
     </mat-form-field>
@@ -82,7 +59,27 @@
     <button type="button" mat-flat-button color="accent" (click)="previewColor()" id="colorPreviewButton">Preview color</button>
     <div id="colorPreviewSquare" style="background-color: rgb({{R}},{{G}},{{B}})"></div>
 
-    <div></div>
+    <mat-divider class="form-divider"></mat-divider>
+
+    <h4>Allowed Drivers</h4>
+
+    <mat-selection-list #drivers>
+      <mat-list-option *ngFor="let d of allDTs">
+        {{d}}
+      </mat-list-option>
+    </mat-selection-list>
+
+    <mat-divider class="form-divider"></mat-divider>
+
+    <h4>Allowed Vehicles</h4>
+
+    <mat-selection-list #vehicles>
+      <mat-list-option *ngFor="let v of allDTs">
+        {{v.name}}
+      </mat-list-option>
+    </mat-selection-list>
+
     <button mat-raised-button disabled color="primary" id="createButton">Create</button>
   </form>
+
 </div>

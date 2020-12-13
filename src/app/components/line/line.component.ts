@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LineService } from '../../services/line.service';
 import { NodeService } from '../../services/node.service';
+import { DriverTypeService } from '../../services/driver-type.service';
+import { VehicleTypeService } from '../../services/vehicle-type.service';
+
+import VehicleType from '../../domain/VehicleType';
 import Node from '../../domain/Node';
 
 export interface ILine {
@@ -32,6 +36,8 @@ export class LineComponent implements OnInit {
   terminalNodes: string[];
 
   allNodes: Node[];
+  allDTs: string[];
+  allVTs: VehicleType[];
 
   ValidColor = [Validators.required, Validators.min(0), Validators.max(255)];
 
@@ -49,19 +55,38 @@ export class LineComponent implements OnInit {
 
   constructor(
     private lineService: LineService,
-    private nodeService: NodeService
+    private nodeService: NodeService,
+    private driverTypeService: DriverTypeService,
+    private vehicleTypeService: VehicleTypeService
   ) {
-    this.nodeService.getNodes().subscribe(
-      nodes => {
-        this.allNodes = nodes;
-        console.log("Succesfully fetched Nodes from backend " + nodes);
-      },
-      err => {
-        console.log(err);
-      });
+    this.fetchNetworkData();
   }
 
   ngOnInit(): void {
+  }
+
+  fetchNetworkData() {
+    this.nodeService.getNodes().subscribe(
+      nodes => {
+        this.allNodes = nodes;
+        console.log("Succesfully fetched " + this.allNodes.length + " Nodes");
+      },
+      err => { console.log(err) }
+    );
+    this.driverTypeService.getDriverTypes().subscribe(
+      drivers => {
+        this.allDTs = drivers;
+        console.log("Succesfully fetched" + this.allDTs.length + " Driver Types");
+      },
+      err => { console.log(err) }
+    );
+    this.vehicleTypeService.getVehicleTypes().subscribe(
+      vehicles => {
+        this.allVTs = vehicles;
+        console.log("Succesfully fetched" + this.allVTs.length + " Vehicle Types");
+      },
+      err => { console.log(err) }
+    );
   }
 
   onSubmit() {
