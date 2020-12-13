@@ -1,3 +1,75 @@
-<div class="path-create-container">
-  <h1>------------ UNDER DEVELOPMENT ------------</h1>
-</div>
+<mat-tab-group>
+  <mat-tab label="List Paths">
+    <app-path-list></app-path-list>
+  </mat-tab>
+  <mat-tab label="Create Paths">
+    <div class="create-path-container">
+
+      <h2>Create new Path for a Line</h2>
+      <form [formGroup]="path" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Select the Line</mat-label>
+          <mat-select matInput formControlName="lineCode" required>
+            <mat-option (click)="selectedLine=true" *ngFor="let l of lines" [value]=l.code>{{l.name}} [{{l.code}}]</mat-option>
+            <mat-error *ngIf="path.value.lineCode.invalid"></mat-error>
+          </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="selectedLine">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Direction</mat-label>
+            <mat-select matInput formControlName="direction" required>
+              <mat-option value="go">Go</mat-option>
+              <mat-option value="return">Return</mat-option>
+              <mat-error *ngIf="path.value.direction.invalid"></mat-error>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-divider class="form-divider"></mat-divider>
+
+          <!-- Create segments to add to path, selecting existing nodes -->
+          <h3>Segments (UNDER DEVELOPMENT)</h3>
+          <!--mat-form-field appearance="outline">
+    <mat-label>Start Node</mat-label>
+    <mat-select formControlName="terminalNode1" required>
+      <mat-option *ngFor="let n of allNodes" [value]=n.shortName>{{n.name}}</mat-option>
+      <mat-error *ngIf="path.value.terminalNode1.invalid"></mat-error>
+    </mat-select>
+  </mat-form-field-->
+
+          <mat-divider class="form-divider"></mat-divider>
+
+          <mat-form-field appearance="outline">
+            <mat-label>First Node</mat-label>
+            <mat-select formControlName="firstNode" required>
+              <mat-option *ngFor="let n of nodes" [value]=n.shortName>{{n.name}}</mat-option>
+              <mat-error *ngIf="path.value.firstNode.invalid"></mat-error>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Last Node</mat-label>
+            <mat-select formControlName="lastNode" required>
+              <mat-option *ngFor="let n of nodes" [value]=n.shortName>{{n.name}}</mat-option>
+              <mat-error *ngIf="path.value.lastNode.invalid"></mat-error>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-divider class="form-divider"></mat-divider>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Is the path empty?</mat-label>
+            <mat-select formControlName="isEmpty" required>
+              <mat-option [value]="true">Yes</mat-option>
+              <mat-option [value]="false">No</mat-option>
+              <mat-error *ngIf="path.value.isEmpty.invalid"></mat-error>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-raised-button id="createButton">Create</button>
+        </div>
+      </form>
+    </div>
+  </mat-tab>
+</mat-tab-group>

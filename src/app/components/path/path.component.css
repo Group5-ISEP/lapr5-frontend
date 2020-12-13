@@ -1,7 +1,19 @@
-.path-create-container {
-    text-align: center;
+.create-path-container {
+  text-align: center;
+  width: 600px;
+  margin: auto;
 }
 
-h1 {
-    color: red;
+.form-divider {
+  width: 60%;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+#createButton {
+  display: block;
+  margin: auto;
+  margin-bottom: 10px;
+  background-color: green;
+  color: white;
 }

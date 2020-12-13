@@ -33,6 +33,8 @@ import { VehicleTypeComponent } from './components/vehicle-type/vehicle-type.com
 import { MapComponent } from './components/map/map.component';
 import { NodeelementComponent } from './components/nodeelement/nodeelement.component';
 import { NodeListComponent } from './components/node-list/node-list.component';
+import { LineListComponent } from './components/line-list/line-list.component';
+import { PathListComponent } from './components/path-list/path-list.component';
 
 
 
@@ -50,7 +52,9 @@ import { NodeListComponent } from './components/node-list/node-list.component';
     VehicleTypeComponent,
     MapComponent,
     NodeelementComponent,
-    NodeListComponent
+    NodeListComponent,
+    LineListComponent,
+    PathListComponent
   ],
   imports: [
     BrowserModule,
