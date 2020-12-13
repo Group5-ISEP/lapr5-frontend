@@ -23,6 +23,8 @@ export class LineService {
   }
 
   create(line: Line) {
+    //console.log("Creating Line with:");
+    console.log(line);
     return this.http.post(environment.masterDataURL + '/api/lines', line);
   }
 }

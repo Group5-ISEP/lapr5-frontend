@@ -6,20 +6,8 @@ import { DriverTypeService } from '../../services/driver-type.service';
 import { VehicleTypeService } from '../../services/vehicle-type.service';
 
 import VehicleType from '../../domain/VehicleType';
+import DriverType from '../../domain/DriverType';
 import Node from '../../domain/Node';
-
-export interface ILine {
-  code: string,
-  name: string,
-  terminalNodes: string[],
-  colorRGB: {
-    red: number,
-    green: number,
-    blue: number
-  },
-  allowedDriverTypes: string[],
-  allowedVehicleTypes: string[]
-}
 
 @Component({
   selector: 'app-line',
@@ -28,7 +16,6 @@ export interface ILine {
 })
 export class LineComponent implements OnInit {
 
-  created: boolean = false;
   showColor: boolean = false;
   R: number = 0;
   G: number = 0;
@@ -36,7 +23,7 @@ export class LineComponent implements OnInit {
   terminalNodes: string[];
 
   allNodes: Node[];
-  allDTs: string[];
+  allDTs: DriverType[];
   allVTs: VehicleType[];
 
   ValidColor = [Validators.required, Validators.min(0), Validators.max(255)];
@@ -71,21 +58,21 @@ export class LineComponent implements OnInit {
         this.allNodes = nodes;
         console.log("Succesfully fetched " + this.allNodes.length + " Nodes");
       },
-      err => { console.log(err) }
+      err => { console.error(err); }
     );
     this.driverTypeService.getDriverTypes().subscribe(
       drivers => {
         this.allDTs = drivers;
-        console.log("Succesfully fetched" + this.allDTs.length + " Driver Types");
+        console.log("Succesfully fetched " + this.allDTs.length + " Driver Types");
       },
-      err => { console.log(err) }
+      err => { console.error(err); }
     );
     this.vehicleTypeService.getVehicleTypes().subscribe(
       vehicles => {
         this.allVTs = vehicles;
-        console.log("Succesfully fetched" + this.allVTs.length + " Vehicle Types");
+        console.log("Succesfully fetched " + this.allVTs.length + " Vehicle Types");
       },
-      err => { console.log(err) }
+      err => { console.error(err); }
     );
   }
 
@@ -106,10 +93,10 @@ export class LineComponent implements OnInit {
     this.lineService.create(body)
       .subscribe(
         res => {
-          this.created = true;
+          alert("Line created correctly!");
         },
         err => {
-          console.log(err);
+          console.error(err);
           alert("The line couldn't be created");
         }
       )

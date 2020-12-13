@@ -14,8 +14,6 @@ export class NodeListComponent implements OnInit {
   displayedColumns: string[] = ['shortName', 'name', 'isDepot', 'reliefPoint', 'longitude', 'latitude'];
   dataSource: MatTableDataSource<Node>;
 
-  @Input() newNodes: number;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

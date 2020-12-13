@@ -17,6 +17,7 @@ export class VehicleTypeService {
   }
 
   getVehicleTypes(): Observable<VehicleType[]> {
-    return this.http.get<VehicleType[]>(environment.masterDataURL + 'api/vehicleTypes');
+    console.log(environment.masterDataURL + 'api/vehicletypes');
+    return this.http.get<VehicleType[]>(environment.masterDataURL + '/api/vehicletypes');
   }
 }

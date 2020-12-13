@@ -29,7 +29,11 @@ export class PathService {
 
   constructor(private http: HttpClient) { }
 
+  create(path: Path) {
+    return this.http.post(environment.masterDataURL + '/api/path', path)
+  }
+
   getPaths(lineCode: string): Observable<Path[]> {
-    return this.http.get<Path[]>(environment.masterDataURL + `/api/path/${lineCode}`)
+    return this.http.get<Path[]>(environment.masterDataURL + '/api/path/${lineCode}')
   }
 }

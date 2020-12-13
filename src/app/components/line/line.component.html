@@ -1,85 +1,97 @@
-<div class="create-line-container">
+<mat-tab-group>
+	<mat-tab label="List Lines">
+		<app-line-list></app-line-list>
+	</mat-tab>
+	<mat-tab label="Create Lines">
+			<div class="create-line-container">
 
-  <h2>Create new Line</h2>
-  <form [formGroup]="line" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline">
-      <mat-label>Code</mat-label>
-      <input matInput formControlName="code">
-      <mat-error *ngIf="line.value.code.invalid">Cannot be blank</mat-error>
-    </mat-form-field>
+			<h2>Create new Line</h2>
+			<form [formGroup]="line" (ngSubmit)="onSubmit()">
+				<mat-form-field appearance="outline">
+					<mat-label>Code</mat-label>
+					<input matInput formControlName="code" required>
+					<mat-error *ngIf="line.value.code.invalid">Cannot be blank</mat-error>
+				</mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name">
-      <mat-error *ngIf="line.value.name.invalid"></mat-error>
-    </mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Name</mat-label>
+					<input matInput formControlName="name" required>
+					<mat-error *ngIf="line.value.name.invalid"></mat-error>
+				</mat-form-field>
 
-    <mat-divider class="form-divider"></mat-divider>
+				<mat-divider class="form-divider"></mat-divider>
 
-    <!-- Show a list of existing nodes and add multiselect option -->
-    <h4>Terminal nodes</h4>
-    <mat-form-field appearance="outline">
-      <mat-label>Start Node</mat-label>
-      <mat-select formControlName="terminalNode1">
-        <mat-option *ngFor="let n of allNodes" [value]=n.shortName>{{n.name}}</mat-option>
-        <mat-error *ngIf="line.value.terminalNode1.invalid"></mat-error>
-      </mat-select>
-    </mat-form-field>
+				<!-- Show a list of existing nodes and add multiselect option -->
+				<h3>Terminal nodes</h3>
+				<mat-form-field appearance="outline">
+					<mat-label>Start Node</mat-label>
+					<mat-select formControlName="terminalNode1" required>
+						<mat-option *ngFor="let n of allNodes" [value]=n.shortName>{{n.name}}</mat-option>
+						<mat-error *ngIf="line.value.terminalNode1.invalid"></mat-error>
+					</mat-select>
+				</mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>End Node</mat-label>
-      <mat-select formControlName="terminalNode2">
-        <mat-option *ngFor="let n of allNodes" [value]=n.shortName>{{n.name}}</mat-option>
-        <mat-error *ngIf="line.value.terminalNode2.invalid"></mat-error>
-      </mat-select>
-    </mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>End Node</mat-label>
+					<mat-select formControlName="terminalNode2" required>
+						<mat-option *ngFor="let n of allNodes" [value]=n.shortName>{{n.name}}</mat-option>
+						<mat-error *ngIf="line.value.terminalNode2.invalid"></mat-error>
+					</mat-select>
+				</mat-form-field>
 
-    <mat-divider class="form-divider"></mat-divider>
+				<mat-divider class="form-divider"></mat-divider>
 
-    <h4>RGB color components</h4>
+				<h3>RGB color components</h3>
 
-    <mat-form-field appearance="outline" class="colorSelect">
-      <mat-label>Red</mat-label>
-      <input matInput type="number" formControlName="colorR" />
-      <mat-error *ngIf="line.value.colorR.invalid"></mat-error>
-    </mat-form-field>
+				<mat-form-field appearance="outline" class="colorSelect">
+					<mat-label>Red</mat-label>
+					<input matInput type="number" formControlName="colorR" required />
+					<mat-error *ngIf="line.value.colorR.invalid"></mat-error>
+				</mat-form-field>
 
-    <mat-form-field appearance="outline" class="colorSelect">
-      <mat-label>Green</mat-label>
-      <input matInput type="number" formControlName="colorG" />
-      <mat-error *ngIf="line.value.colorG.invalid"></mat-error>
-    </mat-form-field>
+				<mat-form-field appearance="outline" class="colorSelect">
+					<mat-label>Green</mat-label>
+					<input matInput type="number" formControlName="colorG" required />
+					<mat-error *ngIf="line.value.colorG.invalid"></mat-error>
+				</mat-form-field>
 
-    <mat-form-field appearance="outline" class="colorSelect">
-      <mat-label>Blue</mat-label>
-      <input matInput type="number" formControlName="colorB" />
-      <mat-error *ngIf="line.value.colorB.invalid"></mat-error>
-    </mat-form-field>
+				<mat-form-field appearance="outline" class="colorSelect">
+					<mat-label>Blue</mat-label>
+					<input matInput type="number" formControlName="colorB" required />
+					<mat-error *ngIf="line.value.colorB.invalid"></mat-error>
+				</mat-form-field>
 
-    <button type="button" mat-flat-button color="accent" (click)="previewColor()" id="colorPreviewButton">Preview color</button>
-    <div id="colorPreviewSquare" style="background-color: rgb({{R}},{{G}},{{B}})"></div>
+				<button type="button" mat-flat-button (click)="previewColor()" id="colorPreviewButton">Preview color</button>
+				<div id="colorPreviewSquare" style="background-color: rgb({{R}},{{G}},{{B}})"></div>
 
-    <mat-divider class="form-divider"></mat-divider>
+				<mat-divider class="form-divider"></mat-divider>
 
-    <h4>Allowed Drivers</h4>
+				<!--h3>Allowed Drivers</h3-->
 
-    <mat-selection-list #drivers>
-      <mat-list-option *ngFor="let d of allDTs">
-        {{d}}
-      </mat-list-option>
-    </mat-selection-list>
+				<mat-form-field appearance="outline" class="t-selector">
+					<mat-label>Allowed Drivers</mat-label>
+					<mat-select formControlName="allowedDriverTypes" required multiple>
+						<mat-option *ngFor="let d of allDTs" [value]="d.description">
+							{{d.description}}
+						</mat-option>
+					</mat-select>
+					<mat-error *ngIf="line.value.allowedDriverTypes.invalid">Please choose allowed drivers</mat-error>
+				</mat-form-field>
 
-    <mat-divider class="form-divider"></mat-divider>
+				<mat-divider class="form-divider"></mat-divider>
 
-    <h4>Allowed Vehicles</h4>
+				<mat-form-field appearance="outline" class="t-selector">
+					<mat-label>Allowed Vehicles</mat-label>
+					<mat-select formControlName="allowedVehicleTypes" required multiple>
+						<mat-option *ngFor="let v of allVTs" [value]="v.name">
+							{{v.name}}
+						</mat-option>
+					</mat-select>
+					<mat-error *ngIf="line.value.allowedVehicleTypes.invalid">Please choose allowed vehicles</mat-error>
+				</mat-form-field>
 
-    <mat-selection-list #vehicles>
-      <mat-list-option *ngFor="let v of allDTs">
-        {{v.name}}
-      </mat-list-option>
-    </mat-selection-list>
-
-    <button mat-raised-button disabled color="primary" id="createButton">Create</button>
-  </form>
-
-</div>
+				<button mat-raised-button id="createButton">Create</button>
+			</form>
+		</div>
+	</mat-tab>
+</mat-tab-group>

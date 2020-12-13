@@ -1,34 +1,57 @@
-h1 {
-    color: red;
+h3 {
+    font-size: 16px;
+    color: grey;
 }
+
 .create-line-container {
-  text-align: center;
-  width: 600px;
-  margin: auto;
+	text-align: center;
+	width: 600px;
+	margin: auto;
 }
 
 #colorPreviewButton {
-    margin-left: 10px;
-    display: inline-block;
+		color: white;
+		background-color: grey;
+		margin-left: 10px;
+		display: inline-block;
 }
 
 .colorSelect {
-    width: 60px;
+	  width: 60px;
+	  margin: auto;
 }
 
 #colorPreviewSquare {
-    width: 40px;
-    height: 40px;
-    display: inline-block;
-    margin-left: 10px;
+		width: 40px;
+		height: 40px;
+		display: inline-flex;
+		margin-left: 10px;
+
 }
 
-.colorSelect {
+.t-selector {
+    width: 80%;
     margin: auto;
+    display: block;
+}
+
+.type-list {
+    width: 60%;
+    margin: auto;
+    outline: auto;
+    outline-color: mediumpurple;
 }
 
 .form-divider {
-    width: 60%;
-    margin: auto;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+#createButton {
+    display: block;
+		margin: auto;
     margin-bottom: 10px;
+		background-color: green;
+		color: white;
 }
