@@ -1,17 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NodeService } from '../../services/node.service';
-import Node from '../../domain/Node';
-import { MatTableDataSource } from '@angular/material/table';
 
-export interface INode {
-  shortName: string,
-  name: string,
-  isDepot: boolean,
-  isReliefPoint: boolean,
-  longitude: number,
-  latitude: number
-}
 
 @Component({
   selector: 'app-node',
@@ -19,10 +9,7 @@ export interface INode {
   styleUrls: ['./node.component.css']
 })
 export class NodeComponent implements OnInit {
-  displayedColumns: string[] = ['shortName', 'name', 'isDepot', 'reliefPoint', 'longitude', 'latitude'];
-  dataSource: MatTableDataSource<Node>;
 
-  nodes: Node[];
 
   node = new FormGroup({
     shortName: new FormControl('', [Validators.required]),
@@ -34,14 +21,6 @@ export class NodeComponent implements OnInit {
   })
 
   constructor(private nodeService: NodeService) {
-    this.nodeService.getNodes().subscribe(
-      res => {
-        this.nodes = res;
-        console.log("Fetched nodes from backend");
-        this.dataSource = new MatTableDataSource<Node>(this.nodes);
-      },
-      err => { console.log(err); }
-    );
   }
 
   ngOnInit(): void {
@@ -56,7 +35,6 @@ export class NodeComponent implements OnInit {
       longitude: this.node.value['longitude'],
       latitude: this.node.value['latitude']
     }
-    //console.log(body);
     
     this.nodeService.create(body)
       .subscribe(

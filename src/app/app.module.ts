@@ -17,7 +17,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion'; 
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table'; 
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTabsModule } from '@angular/material/tabs'; 
 
 import { LoginComponent } from './components/login/login.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -30,6 +32,7 @@ import { DriverTypeComponent } from './components/driver-type/driver-type.compon
 import { VehicleTypeComponent } from './components/vehicle-type/vehicle-type.component';
 import { MapComponent } from './components/map/map.component';
 import { NodeelementComponent } from './components/nodeelement/nodeelement.component';
+import { NodeListComponent } from './components/node-list/node-list.component';
 
 
 
@@ -46,7 +49,8 @@ import { NodeelementComponent } from './components/nodeelement/nodeelement.compo
     DriverTypeComponent,
     VehicleTypeComponent,
     MapComponent,
-    NodeelementComponent
+    NodeelementComponent,
+    NodeListComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,9 @@ import { NodeelementComponent } from './components/nodeelement/nodeelement.compo
     MatButtonModule,
     MatExpansionModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatTabsModule
   ],
 //  providers: [],
   bootstrap: [AppComponent]

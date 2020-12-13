@@ -1,0 +1,44 @@
+<h2>Existing nodes</h2>
+<div class="node-list-container">
+  <mat-form-field id="filter">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Casa da Musica" #input>
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
+
+    <ng-container matColumnDef="shortName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="sncol"> ShortName </th>
+      <td mat-cell *matCellDef="let element" class="sncol"> {{element.shortName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isDepot">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Depot </th>
+      <td mat-cell *matCellDef="let element"> {{element.isDepot}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="reliefPoint">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Relief </th>
+      <td mat-cell *matCellDef="let element"> {{element.isReliefPoint}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="longitude">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Longitude </th>
+      <td mat-cell *matCellDef="let element"> {{element.longitude}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="latitude">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Latitude </th>
+      <td mat-cell *matCellDef="let element"> {{element.latitude}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
