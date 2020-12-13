@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,7 @@ export class NodeListComponent implements OnInit {
   displayedColumns: string[] = ['shortName', 'name', 'isDepot', 'reliefPoint', 'longitude', 'latitude'];
   dataSource: MatTableDataSource<Node>;
 
+  @Input() newNodes: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -21,6 +22,13 @@ export class NodeListComponent implements OnInit {
   nodes: Node[];
 
   constructor(private nodeService: NodeService) {
+    this.fetchNodes();
+  }
+
+  ngOnInit(): void {
+  }
+
+  fetchNodes() {
     this.nodeService.getNodes().subscribe(
       res => {
         this.nodes = res;
@@ -31,9 +39,6 @@ export class NodeListComponent implements OnInit {
       },
       err => { console.log(err); }
     );
-  }
-
-  ngOnInit(): void {
   }
 
   applyFilter(event: Event) {

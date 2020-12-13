@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { INode } from '../components/node/node.component';
 import Node from '../domain/Node';
 
 import { environment } from '../../environments/environment';

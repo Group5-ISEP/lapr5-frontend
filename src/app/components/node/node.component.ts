@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NodeService } from '../../services/node.service';
+import { NodeListComponent } from '../node-list/node-list.component';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { NodeService } from '../../services/node.service';
 })
 export class NodeComponent implements OnInit {
 
+  @ViewChild(NodeListComponent) nodeList: NodeListComponent;
 
   node = new FormGroup({
     shortName: new FormControl('', [Validators.required]),
@@ -39,7 +41,8 @@ export class NodeComponent implements OnInit {
     this.nodeService.create(body)
       .subscribe(
         res => {
-
+          this.nodeList.fetchNodes();
+          alert("Node created succesfully!");
         },
         err => {
           console.log(err);
