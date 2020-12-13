@@ -12,11 +12,11 @@ export class SidenavComponent {
 	fillerNav = [
     { name: "Map", route: "/map", icon: "public" },
     //Add rest of elements in constructor, checking type of user
-    { name: "Create node", route: "/node", icon: "add" },
-    { name: "Create line", route: "/line", icon: "add" },
-    { name: "Create path", route: "/path", icon: "add" },
-    { name: "Create driver type", route: "/driver", icon: "add" },
-    { name: "Create vehicle type", route: "/vehicle", icon: "add" },
+    { name: "Nodes", route: "/node", icon: "adjust" },
+    { name: "Lines", route: "/line", icon: "sync_alt" },
+    { name: "Paths", route: "/path", icon: "east" },
+    { name: "Driver types", route: "/driver", icon: "account_box" },
+    { name: "Vehicle types", route: "/vehicle", icon: "commute" },
     { name: "Import data file", route: "/populate", icon: "publish" }
 	]
 
