@@ -35,6 +35,7 @@ import { NodeelementComponent } from './components/nodeelement/nodeelement.compo
 import { NodeListComponent } from './components/node-list/node-list.component';
 import { LineListComponent } from './components/line-list/line-list.component';
 import { PathListComponent } from './components/path-list/path-list.component';
+import { CreateSegmentComponent } from './components/create-segment/create-segment.component';
 
 
 
@@ -54,7 +55,8 @@ import { PathListComponent } from './components/path-list/path-list.component';
     NodeelementComponent,
     NodeListComponent,
     LineListComponent,
-    PathListComponent
+    PathListComponent,
+    CreateSegmentComponent
   ],
   imports: [
     BrowserModule,

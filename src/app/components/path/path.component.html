@@ -1,6 +1,8 @@
 <mat-tab-group>
   <mat-tab label="List Paths">
-    <app-path-list></app-path-list>
+
+    <app-path-list [lines]="lines"></app-path-list>
+
   </mat-tab>
   <mat-tab label="Create Paths">
     <div class="create-path-container">
@@ -29,14 +31,9 @@
           <mat-divider class="form-divider"></mat-divider>
 
           <!-- Create segments to add to path, selecting existing nodes -->
-          <h3>Segments (UNDER DEVELOPMENT)</h3>
-          <!--mat-form-field appearance="outline">
-    <mat-label>Start Node</mat-label>
-    <mat-select formControlName="terminalNode1" required>
-      <mat-option *ngFor="let n of allNodes" [value]=n.shortName>{{n.name}}</mat-option>
-      <mat-error *ngIf="path.value.terminalNode1.invalid"></mat-error>
-    </mat-select>
-  </mat-form-field-->
+          <h3>Create the segments of the line</h3>
+
+          <app-create-segment [lines]="lines"></app-create-segment>
 
           <mat-divider class="form-divider"></mat-divider>
 

@@ -34,6 +34,6 @@ export class PathService {
   }
 
   getPaths(lineCode: string): Observable<Path[]> {
-    return this.http.get<Path[]>(environment.masterDataURL + '/api/path/${lineCode}')
+    return this.http.get<Path[]>(environment.masterDataURL + '/api/path/' + lineCode);
   }
 }

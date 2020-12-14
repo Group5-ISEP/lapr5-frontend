@@ -1,1 +1,43 @@
-<p>path-list works!</p>
+<h2>Select a line to show its PATHS</h2>
+
+<mat-form-field id="lineSelector" appearance="fill">
+  <mat-label>Line</mat-label>
+  <mat-select>
+    <mat-option (click)="selectLine(l)" *ngFor="let l of lines" [value]="l.code">{{l.name}} [{{l.code}}]</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div *ngIf="lineSelected" class="path-list-container">
+  <h3>Line {{selectedLine.code}}</h3>
+  <table *ngIf="!emptyLine" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
+
+    <ng-container matColumnDef="direction">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Direction </th>
+      <td mat-cell *matCellDef="let element"> {{ element.direction }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="segments">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Stops </th>
+      <td mat-cell *matCellDef="let element"> {{ element.segmentList.length }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstNode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Starter Node </th>
+      <td mat-cell *matCellDef="let element"> {{ element.firstNode }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastNode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> End Node </th>
+      <td mat-cell *matCellDef="let element"> {{ element.lastNode }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isEmpty">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Empty? </th>
+      <td mat-cell *matCellDef="let element"> {{ element.isEmpty }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <p id="errorMSG" *ngIf="emptyLine">The line currently has no PATHs assigned</p>
+</div>
