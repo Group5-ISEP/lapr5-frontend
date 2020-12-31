@@ -30,12 +30,12 @@ export class NodeListComponent implements OnInit {
     this.nodeService.getNodes().subscribe(
       res => {
         this.nodes = res;
-        console.log("Fetched nodes from backend");
+        //console.log("Fetched nodes from backend");
         this.dataSource = new MatTableDataSource<Node>(this.nodes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
-      err => { console.log(err); }
+      err => { console.error(err); }
     );
   }
 

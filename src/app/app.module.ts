@@ -38,7 +38,6 @@ import { NodeListComponent } from './components/node-list/node-list.component';
 import { LineListComponent } from './components/line-list/line-list.component';
 import { PathListComponent } from './components/path-list/path-list.component';
 import { CreateSegmentComponent } from './components/create-segment/create-segment.component';
-import { RgpdComponent } from './components/rgpd/rgpd.component';
 
 
 
@@ -59,8 +58,7 @@ import { RgpdComponent } from './components/rgpd/rgpd.component';
     NodeListComponent,
     LineListComponent,
     PathListComponent,
-    CreateSegmentComponent,
-    RgpdComponent
+    CreateSegmentComponent
   ],
   imports: [
     BrowserModule,

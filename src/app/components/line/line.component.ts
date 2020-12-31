@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LineService } from '../../services/line.service';
 import { NodeService } from '../../services/node.service';
@@ -8,6 +8,8 @@ import { VehicleTypeService } from '../../services/vehicle-type.service';
 import VehicleType from '../../domain/VehicleType';
 import DriverType from '../../domain/DriverType';
 import Node from '../../domain/Node';
+import { LineListComponent } from '../line-list/line-list.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-line',
@@ -15,6 +17,8 @@ import Node from '../../domain/Node';
   styleUrls: ['./line.component.css']
 })
 export class LineComponent implements OnInit {
+
+  @ViewChild(LineListComponent) lineList: LineListComponent;
 
   showColor: boolean = false;
   R: number = 0;
@@ -44,7 +48,8 @@ export class LineComponent implements OnInit {
     private lineService: LineService,
     private nodeService: NodeService,
     private driverTypeService: DriverTypeService,
-    private vehicleTypeService: VehicleTypeService
+    private vehicleTypeService: VehicleTypeService,
+    private _snackBar: MatSnackBar
   ) {
     this.fetchNetworkData();
   }
@@ -56,50 +61,56 @@ export class LineComponent implements OnInit {
     this.nodeService.getNodes().subscribe(
       nodes => {
         this.allNodes = nodes;
-        console.log("Succesfully fetched " + this.allNodes.length + " Nodes");
+        //console.log("Succesfully fetched " + this.allNodes.length + " Nodes");
       },
       err => { console.error(err); }
     );
     this.driverTypeService.getDriverTypes().subscribe(
       drivers => {
         this.allDTs = drivers;
-        console.log("Succesfully fetched " + this.allDTs.length + " Driver Types");
+        //console.log("Succesfully fetched " + this.allDTs.length + " Driver Types");
       },
       err => { console.error(err); }
     );
     this.vehicleTypeService.getVehicleTypes().subscribe(
       vehicles => {
         this.allVTs = vehicles;
-        console.log("Succesfully fetched " + this.allVTs.length + " Vehicle Types");
+        //console.log("Succesfully fetched " + this.allVTs.length + " Vehicle Types");
       },
       err => { console.error(err); }
     );
   }
 
   onSubmit() {
-    const body = {
-      code: this.line.value['code'],
-      name: this.line.value['name'],
-      terminalNodes: [this.line.value['terminalNode1'],this.line.value['terminalNode2']],
-      colorRGB: {
-        red: this.line.value['colorR'],
-        green: this.line.value['colorG'],
-        blue: this.line.value['colorB']
-      },
-      allowedDriverTypes: this.line.value['allowedDriverTypes'],
-      allowedVehicleTypes: this.line.value['allowedVehicleTypes']
-    }
-
-    this.lineService.create(body)
-      .subscribe(
-        res => {
-          alert("Line created correctly!");
+    if (this.line.valid) {
+      const body = {
+        code: this.line.value['code'],
+        name: this.line.value['name'],
+        terminalNodes: [this.line.value['terminalNode1'], this.line.value['terminalNode2']],
+        colorRGB: {
+          red: this.line.value['colorR'],
+          green: this.line.value['colorG'],
+          blue: this.line.value['colorB']
         },
-        err => {
-          console.error(err);
-          alert("The line couldn't be created");
-        }
-      )
+        allowedDriverTypes: this.line.value['allowedDriverTypes'],
+        allowedVehicleTypes: this.line.value['allowedVehicleTypes']
+      }
+
+      this.lineService.create(body)
+        .subscribe(
+          res => {
+            this.lineList.fetchLines();
+            this.clearForm();
+            this._snackBar.open("Line created correctly!", "Ok", { duration: 2000 });
+            alert("");
+          },
+          err => {
+            console.error(err);
+            alert("The line couldn't be created");
+          }
+        )
+    }
+    else { this._snackBar.open("Please fill the form", "Ok", { duration: 2000 }) }
   }
 
   previewColor() {
@@ -107,6 +118,19 @@ export class LineComponent implements OnInit {
     this.R = this.line.value['colorR'];
     this.G = this.line.value['colorG'];
     this.B = this.line.value['colorB'];
+  }
+
+  clearForm() {
+    this.line.setValue({
+      code: '',
+      name: '',
+      terminalNodes: '',
+      colorR: 0,
+      colorG: 0,
+      colorB: 0,
+      allowedDriverTypes: '',
+      allowedVehicleTypes: ''
+    })
   }
 
 }
