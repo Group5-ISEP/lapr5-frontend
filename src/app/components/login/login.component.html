@@ -1,3 +1,29 @@
 <div class="login-container">
-  <h1>------------ UNDER DEVELOPMENT ------------</h1>
+  <h1>Login to access</h1>
+  <form [formGroup]="user" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="text" />
+      <mat-error *ngIf="user.value.email.invalid"></mat-error>
+    </mat-form-field>
+    <h5 *ngIf="user.controls.email.invalid && invalidEmail" class="error">
+      Invalid email address
+    </h5>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" />
+      <mat-error *ngIf="user.value.password.invalid"></mat-error>
+    </mat-form-field>
+    <h5 *ngIf="user.controls.password.invalid && invalidPass" class="error">
+      The password must be between 4 and 20 characters long
+    </h5>
+    <p class="error" *ngIf="showErrorMessage">Login failed, incorrect password or </p>
+    <button mat-raised-button color="primary" id="create-button">Login</button>
+  </form>
+  <mat-divider></mat-divider>
+  <footer>
+    <button mat-button routerLink="/register" routerLinkActive="active">
+      Don't have an account? Create one here!
+    </button>
+  </footer>
 </div>

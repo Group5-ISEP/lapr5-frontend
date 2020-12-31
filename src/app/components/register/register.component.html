@@ -1,3 +1,36 @@
 <div class="register-container">
-  <h1>------------ UNDER DEVELOPMENT ------------</h1>
+  <h1> Create a new user </h1>
+  <form [formGroup]="user" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="text" />
+      <mat-error *ngIf="user.value.email.invalid"></mat-error>
+    </mat-form-field>
+    <h5 *ngIf="user.controls.email.invalid && invalidEmail">
+      Invalid email address
+    </h5>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" />
+      <mat-error *ngIf="user.value.password.invalid"></mat-error>
+    </mat-form-field>
+    <h5 *ngIf="user.controls.password.invalid && invalidPass">
+      The password must be between 4 and 20 characters long
+    </h5>
+    <mat-divider></mat-divider>
+    <button id="showTermsBut" mat-flat-button type="button" (click)="showTerms = !showTerms">Show data policy</button>
+    <mat-card *ngIf="showTerms">
+      <mat-card-title>Terms of use and data policy</mat-card-title>
+      <mat-card-content>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam gravida felis ac diam egestas, sed lacinia ex ultricies. Phasellus accumsan consequat rhoncus. Suspendisse at metus sed dolor venenatis dictum. Nunc rutrum blandit gravida. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel varius risus. Sed pellentesque at mi euismod posuere. Phasellus quis mi lorem. Praesent eleifend leo augue, in elementum metus interdum ut. Suspendisse viverra dapibus ante, eu malesuada odio tincidunt eget. Phasellus elementum turpis mattis mi tempus, ut semper felis varius. Integer molestie vehicula mauris in lacinia. Curabitur turpis quam, laoreet at ullamcorper sit amet, semper eget mauris. Aliquam sagittis arcu diam, vitae semper augue placerat non. Nam dapibus metus mauris, mattis vestibulum ex sollicitudin quis. Cras purus sapien, elementum ac dapibus ac, euismod id dolor. </mat-card-content>
+    </mat-card>
+    <mat-checkbox #checkbox color="primary">I have read and accept the data policy*</mat-checkbox>
+    <h5 *ngIf="!checkbox.checked">Please accept the terms of use</h5>
+    <button mat-raised-button color="primary" id="create-button">Create</button>
+  </form>
+  <mat-divider></mat-divider>
+  <footer>
+    <button mat-button routerLink="/login" routerLinkActive="active">
+      Already have an account? Log in here!
+    </button>
+  </footer>
 </div>

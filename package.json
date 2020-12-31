@@ -28,6 +28,7 @@
     "@here/harp-mapview": "^0.21.1",
     "@here/harp-vectortile-datasource": "^0.21.1",
     "express": "^4.17.1",
+    "haversine-geolocation": "^1.5.0",
     "rxjs": "~6.5.4",
     "three": "^0.123.0",
     "tslib": "^1.10.0",
