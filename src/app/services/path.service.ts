@@ -15,6 +15,7 @@ export class PathService {
    */
   mockPaths: Path[] = [
     {
+      id: null,
       lineCode: "201",
       direction: "To",
       firstNode: "EZC",
@@ -29,7 +30,8 @@ export class PathService {
 
   constructor(private http: HttpClient) { }
 
-  create(path: Path) {
+  create(path) {
+    console.log(path);
     return this.http.post(environment.masterDataURL + '/api/path', path)
   }
 

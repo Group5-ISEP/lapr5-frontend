@@ -1,0 +1,20 @@
+mat-card-title {
+    font-size: large;
+}
+
+mat-form-field {
+    margin: 10px;
+}
+
+mat-card-footer {
+    font-family: cursive;
+    color: dimgrey;
+}
+
+.segmentList {
+    text-align: center;
+}
+
+mat-divider {
+    margin: 10px;
+}

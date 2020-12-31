@@ -1,1 +1,47 @@
-<p>create-segment works!</p>
+<mat-card class="segment-card">
+  <mat-card-title>Define a segment</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="segment">
+
+      <p id="order">Segment order: {{order}}</p>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Start Node</mat-label>
+        <mat-select formControlName="startNode" required>
+          <mat-option *ngFor="let n of nodes" [value]=n>{{n.name}} [{{n.shortName}}]</mat-option>
+          <mat-error *ngIf="segment.value.startNode.invalid"></mat-error>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearace="fill">
+        <mat-label>End Node</mat-label>
+        <mat-select formControlName="endNode" required>
+          <mat-option *ngFor="let n of nodes" [value]=n>{{n.name}} [{{n.shortName}}]</mat-option>
+          <mat-error *ngIf="segment.value.endNode.invalid"></mat-error>
+        </mat-select>
+      </mat-form-field>
+
+      <button type="button" mat-raised-button (click)="calculateDistance()">Calculate distance</button>
+
+      <p *ngIf="calculated" id="distance">Distance: {{distance}}m</p>
+
+      <p *ngIf="calculated" id="duration">Duration: {{duration}}min*</p>
+
+      </form>
+</mat-card-content>
+  <mat-card-footer>* the duration of the ride between both nodes is calculated at an average 40km/h speed</mat-card-footer>
+  <mat-card-actions>
+    <button type="button" mat-raised-button (click)="addSegment()" color="primary">Create</button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-divider></mat-divider>
+
+<mat-card>
+  <mat-card-title>Created segments</mat-card-title>
+  <mat-card-content>
+    <mat-list class="segmentList">
+      <mat-list-item *ngFor="let s of segments">Segment {{s.order}}:    {{s.startNode}} ---> {{s.endNode}}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

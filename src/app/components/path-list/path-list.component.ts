@@ -40,6 +40,7 @@ export class PathListComponent implements OnInit {
         console.log("Fetched " + this.paths.length + " PATHS");
         this.dataSource = new MatTableDataSource<Path>(this.paths);
         if (this.paths.length < 1) { this.emptyLine = true; }
+        else { this.emptyLine = false; }
       },
       err => { this.emptyLine = true; console.error(err) }
     )

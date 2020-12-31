@@ -19,7 +19,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { LoginComponent } from './components/login/login.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -36,6 +38,7 @@ import { NodeListComponent } from './components/node-list/node-list.component';
 import { LineListComponent } from './components/line-list/line-list.component';
 import { PathListComponent } from './components/path-list/path-list.component';
 import { CreateSegmentComponent } from './components/create-segment/create-segment.component';
+import { RgpdComponent } from './components/rgpd/rgpd.component';
 
 
 
@@ -56,7 +59,8 @@ import { CreateSegmentComponent } from './components/create-segment/create-segme
     NodeListComponent,
     LineListComponent,
     PathListComponent,
-    CreateSegmentComponent
+    CreateSegmentComponent,
+    RgpdComponent
   ],
   imports: [
     BrowserModule,
@@ -78,9 +82,11 @@ import { CreateSegmentComponent } from './components/create-segment/create-segme
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSnackBarModule,
+    MatCheckboxModule
   ],
-//  providers: [],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

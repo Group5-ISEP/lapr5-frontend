@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import Line from '../../domain/Line';
 import Node from '../../domain/Node';
 import Path from '../../domain/Path';
@@ -7,6 +8,7 @@ import Segment from '../../domain/Segment';
 import { LineService } from '../../services/line.service';
 import { NodeService } from '../../services/node.service';
 import { PathService } from '../../services/path.service';
+import { CreateSegmentComponent } from '../create-segment/create-segment.component';
 
 @Component({
   selector: 'app-path',
@@ -15,7 +17,12 @@ import { PathService } from '../../services/path.service';
 })
 export class PathComponent implements OnInit {
 
+  @ViewChild(CreateSegmentComponent) createSegments: CreateSegmentComponent;
+
   selectedLine: boolean = false;
+  actualLine: Line = null;
+
+  selectedOrientation: boolean = false;
 
   segments: Segment[];
 
@@ -24,9 +31,8 @@ export class PathComponent implements OnInit {
   paths: Path[];
 
   path = new FormGroup({
-    lineCode: new FormControl('', [Validators.required]),
+    line: new FormControl('', [Validators.required]),
     direction: new FormControl('', [Validators.required]),
-    segmentList: new FormControl('', [Validators.required]),
     firstNode: new FormControl('', [Validators.required]),
     lastNode: new FormControl('', [Validators.required]),
     isEmpty: new FormControl('', [Validators.required])
@@ -35,7 +41,8 @@ export class PathComponent implements OnInit {
   constructor(
     private pathService: PathService,
     private lineService: LineService,
-    private nodeService: NodeService
+    private nodeService: NodeService,
+    private _snackBar: MatSnackBar
   ) {
     this.fetchNetworkData();
   }
@@ -68,21 +75,52 @@ export class PathComponent implements OnInit {
   }
 
   onSubmit() {
-    const body = {
-      lineCode: this.path.value['lineCode'],
-      direction: this.path.value['direction'],
-      segmentList: this.path.value['segmentList'],
-      firstNode: this.path.value['firstNode'],
-      lastNode: this.path.value['lastNode'],
-      isEmpty: this.path.value['isEmpty']
-    }
+    if (this.path.valid) {
+      const body = {
+        lineCode: this.actualLine.code,
+        direction: this.path.value['direction'],
+        segmentList: this.createSegments.segments,
+        firstNode: this.path.value['firstNode'],
+        lastNode: this.path.value['lastNode'],
+        isEmpty: this.path.value['isEmpty']
+      }
 
-    this.pathService.create(body).subscribe(
-      res => {
-        alert("Path succesfully created!")
-      },
-      err => { console.error(err) }
-    )
+      this.pathService.create(body).subscribe(
+        res => {
+          this._snackBar.open("Path created succesfully!", "Ok", { duration: 2000 })
+        },
+        err => { console.error(err) }
+      )
+    }
+    else { this._snackBar.open("Please fill the form correctly", "Ok", { duration: 2000 }) }
+  }
+
+  selectLine() {
+    this.selectedLine = true;
+    this.selectedOrientation = false;
+    this.actualLine = this.path.value['line'];
+  }
+
+  lineOrientation() {
+    if (this.path.value['direction'] == "go") {
+      this.path.setValue({
+        line: this.actualLine,
+        direction: 'go',
+        firstNode: this.actualLine.terminalNodes[0],
+        lastNode: this.actualLine.terminalNodes[1],
+        isEmpty: ''
+      })
+    }
+    else {
+      this.path.setValue({
+        line: this.actualLine,
+        direction: 'return',
+        firstNode: this.actualLine.terminalNodes[1],
+        lastNode: this.actualLine.terminalNodes[0],
+        isEmpty: ''
+      })
+    }
+    this.selectedOrientation = true;
   }
 
 }
