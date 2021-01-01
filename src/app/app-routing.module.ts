@@ -15,7 +15,7 @@ import { MapComponent } from './components/map/map.component';
 
 const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
-  { path: '', redirectTo: '/map', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'driver', component: DriverTypeComponent },

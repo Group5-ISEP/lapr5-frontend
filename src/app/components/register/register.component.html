@@ -17,7 +17,6 @@
     <h5 *ngIf="user.controls.password.invalid && invalidPass">
       The password must be between 4 and 20 characters long
     </h5>
-    <mat-divider></mat-divider>
     <button id="showTermsBut" mat-flat-button type="button" (click)="showTerms = !showTerms">Show data policy</button>
     <mat-card *ngIf="showTerms">
       <mat-card-title>Terms of use and data policy</mat-card-title>
