@@ -209,14 +209,14 @@ export class MapComponent implements OnInit {
     this.map.mapAnchors.clear()
 
     const drawNodes = () => {
-      const geometry = new THREE.CircleGeometry(50);
+      const geometry = this.state.environment3D ? new THREE.SphereGeometry(50) : new THREE.CircleGeometry(50);
       const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
 
       this.networkData.nodes.forEach(node => {
-        const cube: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
-        cube.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
-        cube.renderOrder = 100000;
-        this.map.mapAnchors.add(cube)
+        const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
+        mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
+        mesh.renderOrder = 100000;
+        this.map.mapAnchors.add(mesh)
       });
     }
 
