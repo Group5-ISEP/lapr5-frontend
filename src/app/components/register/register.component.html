@@ -20,7 +20,77 @@
     <button id="showTermsBut" mat-flat-button type="button" (click)="showTerms = !showTerms">Show data policy</button>
     <mat-card *ngIf="showTerms">
       <mat-card-title>Terms of use and data policy</mat-card-title>
-      <mat-card-content>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam gravida felis ac diam egestas, sed lacinia ex ultricies. Phasellus accumsan consequat rhoncus. Suspendisse at metus sed dolor venenatis dictum. Nunc rutrum blandit gravida. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel varius risus. Sed pellentesque at mi euismod posuere. Phasellus quis mi lorem. Praesent eleifend leo augue, in elementum metus interdum ut. Suspendisse viverra dapibus ante, eu malesuada odio tincidunt eget. Phasellus elementum turpis mattis mi tempus, ut semper felis varius. Integer molestie vehicula mauris in lacinia. Curabitur turpis quam, laoreet at ullamcorper sit amet, semper eget mauris. Aliquam sagittis arcu diam, vitae semper augue placerat non. Nam dapibus metus mauris, mattis vestibulum ex sollicitudin quis. Cras purus sapien, elementum ac dapibus ac, euismod id dolor. </mat-card-content>
+      <mat-card-content>
+        <div style="text-align: left;">
+          <p>PORTOBUS belongs to PORTOBUS company. This privacy policy will explain how our organization uses the
+            personal data we collect from you
+            when you use our website.</p>
+          <p>Topics:</p>
+          <ul>
+            <li>What data do we collect?</li>
+            <li>How do we collect your data?</li>
+            <li>How will we use your data?</li>
+            <li>How do we store your data?</li>
+            <li>What are your data protection rights?</li>
+            <li>Changes to our privacy policy</li>
+            <li>How to contact us</li>
+            <li>How to contact the appropriate authorities</li>
+          </ul>
+          <h3>What data do we collect?</h3>
+          <p>PORTOBUS collects the following data:</p>
+          <ul>
+            <li>Personal identification information (Email).</li>
+          </ul>
+          <h3>How do we collect your data?</h3>
+          <p>You directly provide PORTOBUS with most of the data we collect. We collect data and process data when
+            you:</p>
+          <ul>
+            <li>Register online.</li>
+          </ul>
+          <h3>How will we use your data?</h3>
+          <p>PORTOBUS collects your data so that we can:</p>
+          <ul>
+            <li>Contact you about news and updates.</li>
+            <li>Inform about 1 month until consent has expired.</li>
+          </ul>
+          <h3>How do we store your data?</h3>
+          <p>PORTOBUS securely stores your data at the company Data Center systems.</p>
+          <p>PORTOBUS will keep your personal identification information for 1 year starting after the account
+            registration or renewal of consent. Once this time period has expired,
+            we will delete your data by deleting every reference in our Data Center records. <strong>This means you will
+              no longer be able to access our services. If you wish to continue using them, please read the email that
+              will be sent when 1 month is left for consent to expire. Otherwise, you will have to create a new account.</strong></p>
+          <h3>What are your data protection rights?</h3>
+          <p>PORTOBUS would like to make sure you are fully aware of all of your data protection rights. Every user
+            is entitled to the following:</p>
+          <p><strong>The right to access</strong> – You have the right to request PORTOBUS for copies of your
+            personal data. We may charge you a small fee for this service.</p>
+          <p><strong>The right to rectification</strong> – You have the right to request that PORTOBUS correct any
+            information you believe is inaccurate. You also have the right to request PORTOBUS to complete the
+            information you believe is incomplete.</p>
+          <p><strong>The right to erasure</strong> – You have the right to request that PORTOBUS erase your personal
+            data, under certain conditions.</p>
+          <p><strong>The right to restrict processing</strong> – You have the right to request that PORTOBUS restrict
+            the processing of your personal data, under certain conditions.</p>
+          <p><strong>The right to object to processing</strong> – You have the right to object to PORTOBUS’s
+            processing of your personal data, under certain conditions.</p>
+          <p><strong>The right to data portability</strong> – You have the right to request that PORTOBUS transfer
+            the data that we have collected to another organization, or directly to you, under certain conditions.</p>
+          <p>If you make a request, we have one month to respond to you. If you would like to exercise any of these
+            rights, please contact us at our email: 1180622@isep.ipp.pt</p>
+          <h3>Changes to our privacy policy</h3>
+          <p>PORTOBUS keeps its privacy policy under regular review and places any updates on this web page. This
+            privacy policy was last updated on 3 January 2021.</p>
+          <h3>How to contact us</h3>
+          <p>If you have any questions about PORTOBUS’s privacy policy, the data we hold on you, or you would like to
+            exercise one of your data protection rights, please do not hesitate to contact us.</p>
+          <p>Email us at: 1180622@isep.ipp.pt</p>
+          <h3>How to contact the appropriate authority</h3>
+          <p>Should you wish to report a complaint or if you feel that PORTOBUS has not addressed your concern in a
+            satisfactory manner, you may contact the Information Commissioner’s Office.</p>
+          <p>Email: 1200263@isep.ipp.pt</p>
+        </div>
+      </mat-card-content>
     </mat-card>
     <mat-checkbox #checkbox color="primary">I have read and accept the data policy*</mat-checkbox>
     <h5 *ngIf="!checkbox.checked">Please accept the terms of use</h5>
