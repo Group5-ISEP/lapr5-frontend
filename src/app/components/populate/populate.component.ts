@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopulateService } from '../../services/populate.service';
 
 @Component({
@@ -10,7 +11,10 @@ export class PopulateComponent implements OnInit {
 
   file: File;
 
-  constructor(private populateService: PopulateService) { }
+  constructor(
+    private populateService: PopulateService,
+    private _snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
   }
@@ -22,6 +26,7 @@ export class PopulateComponent implements OnInit {
 
   upload() {
     this.populateService.upload(this.file);
+    this._snackBar.open("File sent", "Ok", { duration: 3000 });
   }
 
 }
