@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PopulateService } from '../../services/populate.service';
 
 @Component({
   selector: 'app-populate',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopulateComponent implements OnInit {
 
-  constructor() { }
+  file: File;
+
+  constructor(private populateService: PopulateService) { }
 
   ngOnInit(): void {
+  }
+
+  setFile(f) {
+    this.file = f.item(0);
+    //console.log(file);
+  }
+
+  upload() {
+    this.populateService.upload(this.file);
   }
 
 }

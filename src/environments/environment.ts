@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  masterDataURL: 'http://localhost:3000'
+  masterDataURL: 'http://localhost:3000',
+  masterDataViagensURL: 'http://localhost:5000'
 };
 
 /*

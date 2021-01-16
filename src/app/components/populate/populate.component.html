@@ -1,3 +1,5 @@
 <div class="populate-container">
-  <h1>------------ UNDER DEVELOPMENT ------------</h1>
+  <h1>Upload a .xml file</h1>
+  <input type="file" #fileUpload id="fileUpload" (change)="setFile($event.target.files)" />
+  <button mat-raised-button color="primary" (click)="upload()">Upload</button>
 </div>

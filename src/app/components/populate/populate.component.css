@@ -3,5 +3,14 @@
 }
 
 h1 {
-  color: red;
+    margin-top: 20px;
+}
+
+input {
+    margin-bottom: 20px;
+}
+
+button {
+    display: block;
+    margin: auto;
 }
