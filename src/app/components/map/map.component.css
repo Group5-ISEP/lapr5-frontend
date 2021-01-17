@@ -1,9 +1,14 @@
 #map-container {
-  display: block;
+  display: flex;
 }
 
 #map {
-    display: inline-block;
-    width: 100%;
+    display: inline-flex;
+    width: 80%;
     height: 100%;
+}
+
+#node-info {
+    display: inline-flex;
+    width: 20%;
 }

@@ -38,6 +38,7 @@ import { NodeListComponent } from './components/node-list/node-list.component';
 import { LineListComponent } from './components/line-list/line-list.component';
 import { PathListComponent } from './components/path-list/path-list.component';
 import { CreateSegmentComponent } from './components/create-segment/create-segment.component';
+import { NodeMapInfoComponent } from './components/node-map-info/node-map-info.component';
 
 
 
@@ -58,7 +59,8 @@ import { CreateSegmentComponent } from './components/create-segment/create-segme
     NodeListComponent,
     LineListComponent,
     PathListComponent,
-    CreateSegmentComponent
+    CreateSegmentComponent,
+    NodeMapInfoComponent
   ],
   imports: [
     BrowserModule,
