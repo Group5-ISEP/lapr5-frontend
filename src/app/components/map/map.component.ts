@@ -9,6 +9,7 @@ import { LineService } from 'src/app/services/line.service';
 import { NodeService } from 'src/app/services/node.service';
 import { PathService } from 'src/app/services/path.service';
 import * as THREE from 'three';
+import * as Tooltip from './tooltip';
 
 //interface to use harp CDN specified in the index.html
 declare var harp: any;
@@ -121,6 +122,7 @@ export class MapComponent implements OnInit {
    */
   private async setHandlers() {
     window.onresize = () => this.map.resize(window.innerWidth, window.innerHeight);
+    document.getElementById('map').onmousemove = (event) => { Tooltip.onMouseMove(event, this.map) }
   }
 
   /**
@@ -216,6 +218,9 @@ export class MapComponent implements OnInit {
         const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
         mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
         mesh.renderOrder = 100000;
+
+        mesh.userData.node = node;
+
         this.map.mapAnchors.add(mesh)
       });
     }
