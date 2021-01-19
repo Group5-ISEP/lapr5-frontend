@@ -34,7 +34,7 @@ export class MapComponent implements OnInit {
   private mapControls: MapControls
   private networkData: NetworkData = { nodes: [], lines: [], paths: [] }
 
-  private model3d: THREE.Object3D;
+  private models3d: THREE.Object3D[] = [];
 
   constructor(
     private nodeService: NodeService,
@@ -44,6 +44,7 @@ export class MapComponent implements OnInit {
 
 
   ngOnInit() {
+    this.preloadModel();
 
     this.initMapView()
     this.initCameraTarget()
@@ -53,6 +54,17 @@ export class MapComponent implements OnInit {
     this.initMapDataSource()
     this.initNetworkData()
     this.set2DEnvironment() //inicialize 2D environment
+  }
+
+  private preloadModel() {
+    var loader = new GLTFLoader();
+    loader.load("/assets/station/scene.gltf", (gltf) => {
+      const mesh = gltf.scene.children[0];
+      mesh.rotation.x = 0;
+      mesh.scale.setScalar(0.05)
+
+      this.models3d.push(mesh);
+    })
   }
 
   /**
@@ -67,7 +79,7 @@ export class MapComponent implements OnInit {
       theme: "https://unpkg.com/@here/harp-map-theme@latest/resources/berlin_tilezen_base.json"
     });
     this.map.resize(canvas.offsetWidth, canvas.offsetHeight);
-    console.log(this.map.scene);
+
   }
 
   /**
@@ -238,14 +250,10 @@ export class MapComponent implements OnInit {
       this.networkData.nodes.forEach(node => {
         //If 3D, load 3D model
         if (this.state.environment3D) {
-          var loader = new GLTFLoader();
-          loader.load("/assets/station/scene.gltf", (gltf) => {
-            const mesh: MapAnchor<THREE.Object3D> = gltf.scene.children[0];
-            mesh.rotation.x = 0;
-            mesh.scale.setScalar(0.05)
 
-            addNodes(mesh);
-          })
+          const mesh: MapAnchor<THREE.Object3D> = this.models3d[0];
+          addNodes(mesh);
+
           //If 2D, load basic 2d circle
         } else {
           const geometry = this.state.environment3D ? new THREE.SphereGeometry(50) : new THREE.CircleGeometry(50);
