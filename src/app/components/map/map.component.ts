@@ -9,6 +9,8 @@ import { LineService } from 'src/app/services/line.service';
 import { NodeService } from 'src/app/services/node.service';
 import { PathService } from 'src/app/services/path.service';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 import * as Tooltip from './tooltip';
 
 //interface to use harp CDN specified in the index.html
@@ -31,6 +33,8 @@ export class MapComponent implements OnInit {
   private map: MapView
   private mapControls: MapControls
   private networkData: NetworkData = { nodes: [], lines: [], paths: [] }
+
+  private model3d: THREE.Object3D;
 
   constructor(
     private nodeService: NodeService,
@@ -63,6 +67,7 @@ export class MapComponent implements OnInit {
       theme: "https://unpkg.com/@here/harp-map-theme@latest/resources/berlin_tilezen_base.json"
     });
     this.map.resize(canvas.offsetWidth, canvas.offsetHeight);
+    console.log(this.map.scene);
   }
 
   /**
@@ -211,17 +216,44 @@ export class MapComponent implements OnInit {
     this.map.mapAnchors.clear()
 
     const drawNodes = () => {
-      const geometry = this.state.environment3D ? new THREE.SphereGeometry(50) : new THREE.CircleGeometry(50);
-      const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
+
+      const addNodes = (object: MapAnchor) => {
+        this.networkData.nodes.forEach(node => {
+          const mesh = object.clone();
+          mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 50);
+          mesh.renderOrder = 100000;
+          mesh.traverse((child: THREE.Object3D) => {
+            child.renderOrder = 100000;
+          });
+
+          mesh.userData.node = node;
+
+          this.map.mapAnchors.add(mesh)
+        })
+
+        this.map.update();
+      }
+
 
       this.networkData.nodes.forEach(node => {
-        const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
-        mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 10);
-        mesh.renderOrder = 100000;
+        //If 3D, load 3D model
+        if (this.state.environment3D) {
+          var loader = new GLTFLoader();
+          loader.load("/assets/station/scene.gltf", (gltf) => {
+            const mesh: MapAnchor<THREE.Object3D> = gltf.scene.children[0];
+            mesh.rotation.x = 0;
+            mesh.scale.setScalar(0.05)
 
-        mesh.userData.node = node;
+            addNodes(mesh);
+          })
+          //If 2D, load basic 2d circle
+        } else {
+          const geometry = this.state.environment3D ? new THREE.SphereGeometry(50) : new THREE.CircleGeometry(50);
+          const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
+          const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
+          addNodes(mesh);
+        }
 
-        this.map.mapAnchors.add(mesh)
       });
     }
 
