@@ -110,8 +110,16 @@ export class MapComponent implements OnInit {
       theme,
       enableShadows: true
     });
-    this.map.resize(canvas.offsetWidth, canvas.offsetHeight);
+    this.resizeMap()
 
+  }
+
+  /**
+   * Resize map
+   */
+  private resizeMap() {
+    let container = document.getElementById("map-container");
+    this.map.resize(container.offsetWidth, container.offsetHeight);
   }
 
   /**
@@ -144,9 +152,9 @@ export class MapComponent implements OnInit {
       return
     }
 
-    const canvas = document.getElementById('map') as HTMLElement;
+    const container = document.getElementById('map-container') as HTMLElement;
     const ui = new MapControlsUI(this.mapControls); //creates harp defaul ui side bar for map controls
-    canvas.parentElement.appendChild(ui.domElement); //append side bar to the component element
+    container.appendChild(ui.domElement); //append side bar to the component element
 
     let toggleTiltButton = document.getElementById("harp-gl_controls_tilt-button-ui")
     let buttonDiv = toggleTiltButton.parentElement
@@ -169,7 +177,7 @@ export class MapComponent implements OnInit {
    * Sets all handlers
    */
   private async setHandlers() {
-    window.onresize = () => this.map.resize(window.innerWidth, window.innerHeight);
+    window.onresize = () => this.resizeMap();
     document.getElementById('map').onmousemove = (event) => { Tooltip.onMouseMove(event, this.map) }
   }
 
@@ -217,7 +225,9 @@ export class MapComponent implements OnInit {
           })
       })
   }
-
+  /**
+   * Sets light properties
+   */
   private setLights() {
 
     //sets light in a accessible variable

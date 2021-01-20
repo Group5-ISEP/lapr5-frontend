@@ -1,5 +1,17 @@
+.page {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+#info-container{
+  width: auto;
+}
+
 #map-container {
   display: block;
+  width: 60%;
+  height: 100%;
 }
 
 #map {
