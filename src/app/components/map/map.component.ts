@@ -171,6 +171,9 @@ export class MapComponent implements OnInit {
     newButton.className = "harp-gl_controls-button harp-gl_controls_button-bottom" //set CSS class
 
     buttonDiv.replaceChild(newButton, toggleTiltButton)
+
+    buttonDiv.parentElement.style.removeProperty("right");
+    buttonDiv.parentElement.style.left = "5px";
   }
 
   /**
