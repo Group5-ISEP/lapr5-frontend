@@ -219,7 +219,7 @@ export class MapComponent implements OnInit {
             lines.forEach(line => {
               this.pathService.getPaths(line.code).subscribe(
                 paths => {
-                  this.networkData.paths = paths
+                  this.networkData.paths.push(...paths);
                   this.renderNetwork()
                 }
               )
@@ -339,10 +339,9 @@ export class MapComponent implements OnInit {
       this.networkData.paths.forEach(path => {
         let { red, green, blue } = this.networkData.lines.find(line => line.code === path.lineCode).colorRGB
 
-        // material for segments with line color
-        //FIXME: color is not the same once THREE.Color object is created
-        let color = new THREE.Color(red, green, blue)
-        const material = new THREE.LineBasicMaterial({ color: 0x11f0e8 });
+        let factor = 1 / 255;
+        let color = new THREE.Color(red * factor, green * factor, blue * factor)
+        const material = new THREE.LineBasicMaterial({ color: color });
 
         let segments = path.segmentList
         for (let order = 1; order <= segments.length; order++) {
