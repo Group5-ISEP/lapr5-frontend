@@ -290,28 +290,24 @@ export class MapComponent implements OnInit {
 
     const drawNodes = () => {
 
-      const addNodes = (object: MapAnchor) => {
-        this.networkData.nodes.forEach(node => {
-          const mesh = object.clone();
-          mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 3);
-          mesh.renderOrder = 100000;
-          mesh.traverse((child: THREE.Object3D) => {
-            child.renderOrder = 100000;
-          });
+      const addNode = (object: MapAnchor, node: Node) => {
+        object.anchor = new GeoCoordinates(node.latitude, node.longitude, 3);
+        object.renderOrder = 100000;
+        object.traverse((child: THREE.Object3D) => {
+          child.renderOrder = 100000;
+          child.userData.node = node;
+        });
 
-          mesh.userData.node = node;
+        object.userData.node = node;
 
-          this.map.mapAnchors.add(mesh)
-        })
-
-        this.map.update();
+        this.map.mapAnchors.add(object)
       }
 
 
       this.networkData.nodes.forEach(node => {
         //If 3D, load 3D model
         if (this.state.environment3D) {
-          const mesh: MapAnchor<THREE.Object3D> = this.models3d[0];
+          const mesh: MapAnchor<THREE.Object3D> = this.models3d[0].clone();
           mesh.castShadow = true;
           mesh.receiveShadow = true;
           mesh.traverse(child => {
@@ -319,14 +315,14 @@ export class MapComponent implements OnInit {
             child.receiveShadow = true;
           })
 
-          addNodes(mesh);
+          addNode(mesh, node);
 
           //If 2D, load basic 2d circle
         } else {
           const geometry = new THREE.CircleGeometry(50);
           const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
           const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
-          addNodes(mesh);
+          addNode(mesh, node);
         }
 
       });

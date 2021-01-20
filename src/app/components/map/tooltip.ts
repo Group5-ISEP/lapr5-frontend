@@ -37,7 +37,7 @@ function handleManipulationUpdate() {
 
     var raycaster = map.raycasterFromScreenPoint(mouse.x, mouse.y);
     {
-        var intersects = raycaster.intersectObjects(map.mapAnchors.children);
+        var intersects = raycaster.intersectObjects(map.mapAnchors.children, true);
         if (intersects.length > 0) {
             latestMouseProjection = intersects[0].point;
             hoveredObj = intersects[0].object;
