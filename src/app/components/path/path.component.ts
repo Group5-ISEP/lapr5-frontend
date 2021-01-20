@@ -102,10 +102,10 @@ export class PathComponent implements OnInit {
   }
 
   lineOrientation() {
-    if (this.path.value['direction'] == "go") {
+    if (this.path.value['direction'] == "to") {
       this.path.setValue({
         line: this.actualLine,
-        direction: 'go',
+        direction: 'to',
         firstNode: this.actualLine.terminalNodes[0],
         lastNode: this.actualLine.terminalNodes[1],
         isEmpty: ''
@@ -114,7 +114,7 @@ export class PathComponent implements OnInit {
     else {
       this.path.setValue({
         line: this.actualLine,
-        direction: 'return',
+        direction: 'from',
         firstNode: this.actualLine.terminalNodes[1],
         lastNode: this.actualLine.terminalNodes[0],
         isEmpty: ''

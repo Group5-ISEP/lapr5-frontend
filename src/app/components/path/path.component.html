@@ -22,8 +22,8 @@
         <mat-form-field *ngIf="selectedLine" appearance="outline">
           <mat-label>Select the direction</mat-label>
           <mat-select matInput formControlName="direction" required>
-            <mat-option (click)="lineOrientation()" value="go">Go</mat-option>
-            <mat-option (click)="lineOrientation()" value="return">Return</mat-option>
+            <mat-option (click)="lineOrientation()" value="to">To</mat-option>
+            <mat-option (click)="lineOrientation()" value="from">From</mat-option>
             <mat-error *ngIf="path.value.direction.invalid"></mat-error>
           </mat-select>
         </mat-form-field>
