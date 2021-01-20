@@ -1,0 +1,11 @@
+Model Information:
+* title:	Log Cabin
+* source:	https://sketchfab.com/3d-models/log-cabin-459f2d5fa81f44d1a006962072e59187
+* author:	Ciolan-T. Sebastian (https://sketchfab.com/ciolan)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Log Cabin" (https://sketchfab.com/3d-models/log-cabin-459f2d5fa81f44d1a006962072e59187) by Ciolan-T. Sebastian (https://sketchfab.com/ciolan) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

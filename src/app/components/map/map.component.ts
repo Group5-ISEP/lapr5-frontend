@@ -60,10 +60,10 @@ export class MapComponent implements OnInit {
 
   private preloadModel() {
     var loader = new GLTFLoader();
-    loader.load("/assets/station/scene.gltf", (gltf) => {
+    loader.load("/assets/log_cabin/scene.gltf", (gltf) => {
       const mesh = gltf.scene.children[0];
       mesh.rotation.x = 0;
-      mesh.scale.setScalar(0.05)
+      mesh.scale.setScalar(0.005)
 
       this.models3d.push(mesh);
     })
@@ -293,7 +293,7 @@ export class MapComponent implements OnInit {
       const addNodes = (object: MapAnchor) => {
         this.networkData.nodes.forEach(node => {
           const mesh = object.clone();
-          mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 50);
+          mesh.anchor = new GeoCoordinates(node.latitude, node.longitude, 3);
           mesh.renderOrder = 100000;
           mesh.traverse((child: THREE.Object3D) => {
             child.renderOrder = 100000;
@@ -365,7 +365,7 @@ export class MapComponent implements OnInit {
 
           // Segment mesh
           const line: MapAnchor<THREE.Line> = new THREE.Line(geometry, material);
-          line.anchor = new GeoCoordinates(startNode.latitude, startNode.longitude, 10); //attach to start node position
+          line.anchor = new GeoCoordinates(startNode.latitude, startNode.longitude, 2); //attach to start node position
           line.renderOrder = 9999
 
           this.map.mapAnchors.add(line)
