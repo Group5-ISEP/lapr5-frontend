@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GeoCoordinates } from '@here/harp-geoutils';
-import { MapControls } from '@here/harp-map-controls';
+import { MapControls, MapControlsUI } from '@here/harp-map-controls';
 import { MapAnchor, MapView } from '@here/harp-mapview';
 import Line from 'src/app/domain/Line';
 import Node from 'src/app/domain/Node';
@@ -10,6 +10,7 @@ import { NodeService } from 'src/app/services/node.service';
 import { PathService } from 'src/app/services/path.service';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { Theme } from "@here/harp-datasource-protocol";
 
 import * as Tooltip from './tooltip';
 
@@ -36,6 +37,8 @@ export class MapComponent implements OnInit {
 
   private models3d: THREE.Object3D[] = [];
 
+  private sun: THREE.DirectionalLight;
+
   constructor(
     private nodeService: NodeService,
     private lineService: LineService,
@@ -45,7 +48,6 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.preloadModel();
-
     this.initMapView()
     this.initCameraTarget()
     this.initMapControls()
@@ -73,10 +75,40 @@ export class MapComponent implements OnInit {
    * The scene is renderes in a canvas html element
    */
   private initMapView() {
-    const canvas = document.getElementById('map') as HTMLElement;
+    const canvas = document.getElementById('map') as HTMLCanvasElement;
+
+    const theme: Theme = {
+      extends: "https://unpkg.com/@here/harp-map-theme@latest/resources/berlin_tilezen_base.json",
+      lights: [
+        {
+          type: "ambient",
+          color: "#ffffff",
+          name: "ambientLight",
+          intensity: 0.9
+        },
+        {
+          type: "directional",
+          color: "#ffffff",
+          name: "light1",
+          intensity: 1,
+          // Will be overriden immediately, see `update`
+          direction: {
+            x: 1,
+            y: 0.01,
+            z: -1
+          },
+          castShadow: false
+        }
+      ],
+      definitions: {
+        // Opaque buildings
+        defaultBuildingColor: { value: "#EDE7E1FF" }
+      }
+    };
     this.map = new harp.MapView({
       canvas,
-      theme: "https://unpkg.com/@here/harp-map-theme@latest/resources/berlin_tilezen_base.json"
+      theme,
+      enableShadows: true
     });
     this.map.resize(canvas.offsetWidth, canvas.offsetHeight);
 
@@ -99,8 +131,7 @@ export class MapComponent implements OnInit {
    * provides basic map-related building blocks to interact with the map 
    */
   private initMapControls() {
-    this.mapControls = new harp.MapControls(this.map); //initializes map controls
-
+    this.mapControls = new MapControls(this.map); //initializes map controls
   }
 
   /**
@@ -114,7 +145,7 @@ export class MapComponent implements OnInit {
     }
 
     const canvas = document.getElementById('map') as HTMLElement;
-    const ui = new harp.MapControlsUI(this.mapControls); //creates harp defaul ui side bar for map controls
+    const ui = new MapControlsUI(this.mapControls); //creates harp defaul ui side bar for map controls
     canvas.parentElement.appendChild(ui.domElement); //append side bar to the component element
 
     let toggleTiltButton = document.getElementById("harp-gl_controls_tilt-button-ui")
@@ -187,6 +218,22 @@ export class MapComponent implements OnInit {
       })
   }
 
+  private setLights() {
+
+    //sets light in a accessible variable
+    if (!this.sun)
+      this.map.scene.traverse(child => {
+        if (child.type == "DirectionalLight") {
+          this.sun = child as THREE.DirectionalLight
+        }
+      })
+    if (this.sun) {
+      this.sun.castShadow = this.state.environment3D ? true : false
+    }
+
+    this.map.update()
+  }
+
 
   /**
    * Sets the tilt to 0, which sets a vertical view
@@ -199,8 +246,8 @@ export class MapComponent implements OnInit {
     this.mapControls.tiltEnabled = false
 
     this.state.environment3D = false
-
     this.renderNetwork() //trigger rerender
+    this.setLights()
   }
 
   /**
@@ -216,6 +263,7 @@ export class MapComponent implements OnInit {
 
     this.state.environment3D = true
     this.renderNetwork() //trigger rerender
+    this.setLights()
   }
 
 
@@ -250,13 +298,19 @@ export class MapComponent implements OnInit {
       this.networkData.nodes.forEach(node => {
         //If 3D, load 3D model
         if (this.state.environment3D) {
-
           const mesh: MapAnchor<THREE.Object3D> = this.models3d[0];
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          mesh.traverse(child => {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          })
+
           addNodes(mesh);
 
           //If 2D, load basic 2d circle
         } else {
-          const geometry = this.state.environment3D ? new THREE.SphereGeometry(50) : new THREE.CircleGeometry(50);
+          const geometry = new THREE.CircleGeometry(50);
           const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
           const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
           addNodes(mesh);
