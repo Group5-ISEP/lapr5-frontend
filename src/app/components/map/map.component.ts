@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { GeoCoordinates } from '@here/harp-geoutils';
 import { MapControls, MapControlsUI } from '@here/harp-map-controls';
-import { MapAnchor, MapView } from '@here/harp-mapview';
+import { MapView } from '@here/harp-mapview';
 import Line from 'src/app/domain/Line';
 import Node from 'src/app/domain/Node';
 import Path from 'src/app/domain/Path';
 import { LineService } from 'src/app/services/line.service';
 import { NodeService } from 'src/app/services/node.service';
 import { PathService } from 'src/app/services/path.service';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Theme } from "@here/harp-datasource-protocol";
 
 import * as Tooltip from './tooltip';
+import * as Render from './render';
 
 //interface to use harp CDN specified in the index.html
 declare var harp: any;
 
-interface NetworkData {
+export interface NetworkData {
   nodes: Node[],
   lines: Line[],
   paths: Path[]
 }
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -35,8 +34,6 @@ export class MapComponent implements OnInit {
   private mapControls: MapControls
   private networkData: NetworkData = { nodes: [], lines: [], paths: [] }
 
-  private models3d: THREE.Object3D[] = [];
-
   private sun: THREE.DirectionalLight;
 
   constructor(
@@ -47,7 +44,7 @@ export class MapComponent implements OnInit {
 
 
   ngOnInit() {
-    this.preloadModel();
+    Render.preloadModel();
     this.initMapView()
     this.initCameraTarget()
     this.initMapControls()
@@ -56,17 +53,6 @@ export class MapComponent implements OnInit {
     this.initMapDataSource()
     this.initNetworkData()
     this.set2DEnvironment() //inicialize 2D environment
-  }
-
-  private preloadModel() {
-    var loader = new GLTFLoader();
-    loader.load("/assets/log_cabin/scene.gltf", (gltf) => {
-      const mesh = gltf.scene.children[0];
-      mesh.rotation.x = 0;
-      mesh.scale.setScalar(0.005)
-
-      this.models3d.push(mesh);
-    })
   }
 
   /**
@@ -210,7 +196,7 @@ export class MapComponent implements OnInit {
     this.nodeService.getNodes().subscribe(
       nodes => {
         this.networkData.nodes = nodes;
-        this.renderNetwork()
+        Render.renderNetwork(this.map, this.networkData, this.state.environment3D) //trigger rerender
 
         this.lineService.getLines().subscribe(
           lines => {
@@ -220,7 +206,7 @@ export class MapComponent implements OnInit {
               this.pathService.getPaths(line.code).subscribe(
                 paths => {
                   this.networkData.paths.push(...paths);
-                  this.renderNetwork()
+                  Render.renderNetwork(this.map, this.networkData, this.state.environment3D) //trigger rerender
                 }
               )
             });
@@ -259,7 +245,7 @@ export class MapComponent implements OnInit {
     this.mapControls.tiltEnabled = false
 
     this.state.environment3D = false
-    this.renderNetwork() //trigger rerender
+    Render.renderNetwork(this.map, this.networkData, this.state.environment3D) //trigger rerender
     this.setLights()
   }
 
@@ -275,106 +261,10 @@ export class MapComponent implements OnInit {
     this.mapControls.tiltEnabled = true
 
     this.state.environment3D = true
-    this.renderNetwork() //trigger rerender
+    Render.renderNetwork(this.map, this.networkData, this.state.environment3D) //trigger rerender
     this.setLights()
   }
 
 
-  /**
-   * ONLY RENDERS 2D FOR NOW!!!!!!!!!!
-   */
-  private renderNetwork() {
-    console.log("RENDER CALLED")
-
-    this.map.mapAnchors.clear()
-
-    const drawNodes = () => {
-
-      const addNode = (object: MapAnchor, node: Node) => {
-        object.anchor = new GeoCoordinates(node.latitude, node.longitude, 3);
-        object.renderOrder = 100000;
-        object.traverse((child: THREE.Object3D) => {
-          child.renderOrder = 100000;
-          child.userData.node = node;
-        });
-
-        object.userData.node = node;
-
-        this.map.mapAnchors.add(object)
-      }
-
-
-      this.networkData.nodes.forEach(node => {
-        //If 3D, load 3D model
-        if (this.state.environment3D) {
-          const mesh: MapAnchor<THREE.Object3D> = this.models3d[0].clone();
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-          mesh.traverse(child => {
-            child.castShadow = true;
-            child.receiveShadow = true;
-          })
-
-          addNode(mesh, node);
-
-          //If 2D, load basic 2d circle
-        } else {
-          const geometry = new THREE.CircleGeometry(50);
-          const material = new THREE.MeshStandardMaterial({ color: 0x00ff00fe });
-          const mesh: MapAnchor<THREE.Mesh> = new THREE.Mesh(geometry, material);
-          addNode(mesh, node);
-        }
-
-      });
-    }
-
-    const drawSegments = () => {
-
-      //TODO: deal with overlapping
-
-      this.networkData.paths.forEach(path => {
-        let { red, green, blue } = this.networkData.lines.find(line => line.code === path.lineCode).colorRGB
-
-        let factor = 1 / 255;
-        let color = new THREE.Color(red * factor, green * factor, blue * factor)
-        const material = new THREE.LineBasicMaterial({ color: color });
-
-        let segments = path.segmentList
-        for (let order = 1; order <= segments.length; order++) {
-          const segment = segments.find(seg => seg.order === order)
-          const startNode = this.networkData.nodes.find(node => node.shortName === segment.startNode)
-          const endNode = this.networkData.nodes.find(node => node.shortName === segment.endNode)
-
-          //Points for Line geometry
-          const points = [];
-          //First point of the segment
-          points.push(new THREE.Vector3(0, 0, 0));
-          //Second point of the segment
-          let geop1 = new GeoCoordinates(startNode.latitude, startNode.longitude)
-          let geop2 = new GeoCoordinates(endNode.latitude, endNode.longitude)
-          let p1 = this.map.projection.projectPoint(geop1)
-          let p2 = this.map.projection.projectPoint(geop2)
-          points.push(new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, 0))
-
-          // geometry of segment from points
-          const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-          // Segment mesh
-          const line: MapAnchor<THREE.Line> = new THREE.Line(geometry, material);
-          line.anchor = new GeoCoordinates(startNode.latitude, startNode.longitude, 2); //attach to start node position
-          line.renderOrder = 9999
-
-          this.map.mapAnchors.add(line)
-        }
-      });
-
-    }
-
-    drawNodes()
-    drawSegments()
-
-    this.map.update()
-
-  }
 
 }
