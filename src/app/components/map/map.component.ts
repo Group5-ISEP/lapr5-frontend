@@ -29,7 +29,14 @@ export interface NetworkData {
 })
 export class MapComponent implements OnInit {
 
-  state = { environment3D: false }
+  state = {
+    environment3D: false,
+    /**
+     * Drag state is used by mouse event handlers to check  if user drags while clicking.
+     * This is used to check if the user is selecting or dragging.
+     */
+    dragState: { dragged: false, distance: 0 }
+  }
 
   private map: MapView
   private mapControls: MapControls
@@ -170,9 +177,18 @@ export class MapComponent implements OnInit {
    * Sets all handlers
    */
   private async setHandlers() {
+
     window.onresize = () => this.resizeMap();
-    document.getElementById('map').onmousemove = (event) => { Tooltip.onMouseMove(event, this.map) }
-    document.getElementById('map').onclick = (event) => { this.select(event) }
+
+    document.getElementById('map').onmousemove = (event) => {
+      this.updateDragState(event)
+      Tooltip.onMouseMove(event, this.map)
+    }
+    document.getElementById('map').onmousedown = (event) => { this.state.dragState = { dragged: false, distance: 0 }; }
+    document.getElementById('map').onmouseup = (event) => {
+      if (this.state.dragState.dragged == false)
+        this.select(event)
+    }
   }
 
   /**
@@ -284,6 +300,17 @@ export class MapComponent implements OnInit {
         }
       }
     }
+  }
+
+  private updateDragState(event: MouseEvent) {
+
+    let mouseTravelDistance = Math.sqrt(Math.pow(event.movementX, 2) + Math.pow(event.movementY, 2))
+
+    this.state.dragState.distance += mouseTravelDistance;
+
+    if (this.state.dragState.distance > 10)
+      this.state.dragState.dragged = true;
+
   }
 
 }
