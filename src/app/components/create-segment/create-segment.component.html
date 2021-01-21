@@ -25,11 +25,11 @@
 
       <p *ngIf="calculated" id="distance">Distance: {{distance}}m</p>
 
-      <p *ngIf="calculated" id="duration">Duration: {{duration}}min*</p>
+      <p *ngIf="calculated" id="duration">Duration: {{duration / 60 | number:'.0-0'}}min*</p>
 
       </form>
 </mat-card-content>
-  <mat-card-footer>* the duration of the ride between both nodes is calculated at an average 40km/h speed</mat-card-footer>
+  <mat-card-footer>* the duration of the ride between both nodes is calculated at an average 30km/h speed</mat-card-footer>
   <mat-card-actions>
     <button type="button" mat-raised-button (click)="addSegment()" color="primary">Create</button>
   </mat-card-actions>
