@@ -38,6 +38,6 @@
 }
 #node-info {
     display: inline-flex;
-    width: 20%;
-    min-width: 300px;
+    width: auto;
+    min-width: 350px;
 }
