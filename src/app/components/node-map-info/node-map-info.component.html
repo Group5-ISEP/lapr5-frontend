@@ -1,4 +1,5 @@
-<mat-card class="node-info">
+<mat-card class="node-info" style="overflow-y: scroll;">
+
   <mat-card-header *ngIf="!node">
     <mat-card-subtitle>Select a node</mat-card-subtitle>
   </mat-card-header>
@@ -6,7 +7,38 @@
     <mat-card-title>{{node.name}}</mat-card-title>
     <mat-card-subtitle>{{node.shortName}}</mat-card-subtitle>
   </mat-card-header>
+  
   <mat-card-content *ngIf="node">
-    <p>Timetables and lines</p>
+    <h2>Timetable</h2>
+  </mat-card-content>
+
+
+  <mat-table [dataSource]="timetable" *ngIf="node && timetable.length>0">
+    <!-- Line Definition -->
+    <ng-container matColumnDef="line">
+      <mat-header-cell *matHeaderCellDef> Line </mat-header-cell>
+      <mat-cell *matCellDef="let bus"> {{bus.line}} </mat-cell>
+    </ng-container>
+
+    <!-- Destination Name Definition -->
+    <ng-container matColumnDef="destination">
+      <mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
+      <mat-cell *matCellDef="let bus"> {{bus.destinationName}} </mat-cell>
+    </ng-container>
+
+    <!-- Time Definition -->
+    <ng-container matColumnDef="time">
+      <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+      <mat-cell *matCellDef="let bus"> {{bus.passingTime * 1000 | date:'H:mm':'GMT'}} </mat-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['line', 'destination', 'time']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['line', 'destination', 'time']"></mat-row>
+  </mat-table>
+
+
+  <mat-card-content *ngIf="node && timetable.length==0">
+    <p>No buses</p>
   </mat-card-content>
 </mat-card>
