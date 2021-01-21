@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MapControls, MapControlsUI } from '@here/harp-map-controls';
 import { MapView } from '@here/harp-mapview';
 import Line from 'src/app/domain/Line';
@@ -11,6 +11,7 @@ import { Theme } from "@here/harp-datasource-protocol";
 
 import * as Tooltip from './tooltip';
 import * as Render from './render';
+import { NodeMapInfoComponent } from '../node-map-info/node-map-info.component';
 
 //interface to use harp CDN specified in the index.html
 declare var harp: any;
@@ -33,6 +34,9 @@ export class MapComponent implements OnInit {
   private map: MapView
   private mapControls: MapControls
   private networkData: NetworkData = { nodes: [], lines: [], paths: [] }
+
+  @ViewChild(NodeMapInfoComponent)
+  private nodeInfoComponent: NodeMapInfoComponent;
 
   private sun: THREE.DirectionalLight;
 
@@ -168,6 +172,7 @@ export class MapComponent implements OnInit {
   private async setHandlers() {
     window.onresize = () => this.resizeMap();
     document.getElementById('map').onmousemove = (event) => { Tooltip.onMouseMove(event, this.map) }
+    document.getElementById('map').onclick = (event) => { this.select(event) }
   }
 
   /**
@@ -265,6 +270,20 @@ export class MapComponent implements OnInit {
     this.setLights()
   }
 
+  private select(event: MouseEvent) {
 
+    var raycaster = this.map.raycasterFromScreenPoint(event.offsetX, event.offsetY);
+    {
+      var intersects = raycaster.intersectObjects(this.map.mapAnchors.children, true);
+      if (intersects.length > 0) {
+        let selected = intersects[0].object;
+        if (selected.userData.node) {
+          console.log("SELECTED: " + selected.userData.node.shortName)
+          this.nodeInfoComponent.node = selected.userData.node;
+          this.nodeInfoComponent.updateSchedule();
+        }
+      }
+    }
+  }
 
 }
