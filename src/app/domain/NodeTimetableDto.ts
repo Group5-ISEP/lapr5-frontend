@@ -5,5 +5,5 @@ export interface NodeTimetableDto {
 export interface BusPassingTime {
     line: string,
     destinationName: string,
-    passingTime: number
+    timeInstant: number
 }

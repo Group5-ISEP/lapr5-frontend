@@ -29,7 +29,7 @@
     <!-- Time Definition -->
     <ng-container matColumnDef="time">
       <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
-      <mat-cell *matCellDef="let bus"> {{bus.passingTime * 1000 | date:'H:mm':'GMT'}} </mat-cell>
+      <mat-cell *matCellDef="let bus"> {{bus.timeInstant * 1000 | date:'H:mm':'GMT'}} </mat-cell>
     </ng-container>
 
     <!-- Header and Row Declarations -->

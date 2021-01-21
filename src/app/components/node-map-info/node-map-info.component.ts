@@ -26,7 +26,7 @@ export class NodeMapInfoComponent implements OnInit {
         .subscribe((data: NodeTimetableDto) => {
           this.timetable = data.schedule
             .sort((bus, other) => {
-              if (bus.passingTime < other.passingTime)
+              if (bus.timeInstant < other.timeInstant)
                 return -1;
               return 1;
             })

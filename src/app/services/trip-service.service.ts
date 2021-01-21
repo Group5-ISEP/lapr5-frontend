@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { NodeTimetableDto } from '../domain/NodeTimetableDto';
 
 @Injectable({
@@ -9,21 +11,18 @@ export class TripService {
 
   mockSchedule: NodeTimetableDto = {
     schedule: [
-      { line: "201", destinationName: "Boavista", passingTime: 19800 },
-      { line: "201", destinationName: "Boavista", passingTime: 1000 },
-      { line: "201", destinationName: "Boavista", passingTime: 10000 },
-      { line: "201", destinationName: "Boavista", passingTime: 68400 },
-      { line: "201", destinationName: "Boavista", passingTime: 79200 },
-      { line: "201", destinationName: "Boavista", passingTime: 500 },
+      { line: "201", destinationName: "Boavista", timeInstant: 19800 },
+      { line: "201", destinationName: "Boavista", timeInstant: 1000 },
+      { line: "201", destinationName: "Boavista", timeInstant: 10000 },
+      { line: "201", destinationName: "Boavista", timeInstant: 68400 },
+      { line: "201", destinationName: "Boavista", timeInstant: 79200 },
+      { line: "201", destinationName: "Boavista", timeInstant: 500 },
     ]
   }
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getScheduleByNode(nodeId: string): Observable<NodeTimetableDto> {
-    if (nodeId === "FTM")
-      return of(this.mockSchedule)
-
-    return of({ schedule: [] })
+    return this.http.get<NodeTimetableDto>(environment.masterDataViagensURL + '/api/trips/timetable/' + nodeId);
   }
 }
