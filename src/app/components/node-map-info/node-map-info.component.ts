@@ -14,6 +14,9 @@ export class NodeMapInfoComponent implements OnInit {
 
   timetable: BusPassingTime[];
 
+  fetching = false;
+  error = false;
+
   constructor(private tripService: TripService) { }
 
   ngOnInit(): void {
@@ -22,15 +25,29 @@ export class NodeMapInfoComponent implements OnInit {
   updateSchedule() {
     if (this.node) {
       console.log("Fetching schedule...");
+      this.fetching = true;
+      this.error = false;
+
+
       this.tripService.getScheduleByNode(this.node.shortName)
         .subscribe((data: NodeTimetableDto) => {
-          this.timetable = data.schedule
-            .sort((bus, other) => {
-              if (bus.timeInstant < other.timeInstant)
-                return -1;
-              return 1;
-            })
+          try {
+            this.timetable = data.schedule
+              .sort((bus, other) => {
+                if (bus.timeInstant < other.timeInstant)
+                  return -1;
+                return 1;
+              })
+
+            this.fetching = false;
+
+          } catch (error) {
+            this.fetching = false;
+            this.error = true;
+          }
         })
+
+
     }
   }
 

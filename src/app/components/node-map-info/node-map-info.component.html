@@ -13,7 +13,7 @@
   </mat-card-content>
 
 
-  <mat-table [dataSource]="timetable" *ngIf="node && timetable.length>0">
+  <mat-table [dataSource]="timetable" *ngIf="node && timetable && !fetching && !error && timetable.length>0">
     <!-- Line Definition -->
     <ng-container matColumnDef="line">
       <mat-header-cell *matHeaderCellDef> Line </mat-header-cell>
@@ -37,8 +37,13 @@
     <mat-row *matRowDef="let row; columns: ['line', 'destination', 'time']"></mat-row>
   </mat-table>
 
+  <mat-spinner *ngIf="fetching"></mat-spinner>
 
-  <mat-card-content *ngIf="node && timetable.length==0">
+  <mat-card-content *ngIf="node && timetable && !fetching && !error && timetable.length==0">
     <p>No buses</p>
+  </mat-card-content>
+
+  <mat-card-content *ngIf="error">
+    <p>Error fetching timetable.</p>
   </mat-card-content>
 </mat-card>
