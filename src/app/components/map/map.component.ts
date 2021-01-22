@@ -46,8 +46,8 @@ export class MapComponent implements OnInit {
   private nodeInfoComponent: NodeMapInfoComponent;
 
   private sun: THREE.DirectionalLight;
-  sunIntensity: number = 50;
-  rotationAngleX: number = 0;
+  sunIntensity: number = 80;
+  rotationAngle: number = 20;
 
   constructor(
     private nodeService: NodeService,
@@ -92,8 +92,8 @@ export class MapComponent implements OnInit {
           intensity: 1,
           // Will be overriden immediately, see `update`
           direction: {
-            x: 1,
-            y: 0.01,
+            x: 0,
+            y: 0,
             z: -1
           },
           castShadow: false
@@ -251,7 +251,22 @@ export class MapComponent implements OnInit {
       })
     if (this.sun) {
       this.sun.castShadow = this.state.environment3D ? true : false
-      this.sun.intensity = this.state.environment3D ? this.sunIntensity / 100 : 0.5
+
+      if (this.state.environment3D) {
+        this.sun.intensity = this.sunIntensity / 100
+
+        //rotation angle is used as translation of light and target in opposite ways, looking like sun rotation
+        this.sun.target.position.x = this.rotationAngle;
+        this.sun.position.x = this.rotationAngle * -70;
+        this.sun.position.y = this.rotationAngle * -40;
+
+        // changes the color to more or less yellow
+        let green = 255 - Math.abs(this.rotationAngle * 0.7)
+        let blue = 255 - Math.abs(this.rotationAngle * 1.5)
+
+        this.sun.color.setRGB(1, green / 255, blue / 255);
+      }
+
     }
 
     this.map.update()
@@ -335,12 +350,12 @@ export class MapComponent implements OnInit {
 
   onLightIntensityChange(value: number) {
     this.sunIntensity = value;
-    this.sun.intensity = this.sunIntensity / 100;
-    this.map.update()
+    this.setLights();
   }
 
-  onRotationAngleXChange(value: number) {
-    this.rotationAngleX = value
+  onRotationAngleChange(value: number) {
+    this.rotationAngle = value
+    this.setLights();
   }
 
 }
