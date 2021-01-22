@@ -46,6 +46,8 @@ export class MapComponent implements OnInit {
   private nodeInfoComponent: NodeMapInfoComponent;
 
   private sun: THREE.DirectionalLight;
+  sunIntensity: number = 50;
+  rotationAngleX: number = 0;
 
   constructor(
     private nodeService: NodeService,
@@ -249,6 +251,7 @@ export class MapComponent implements OnInit {
       })
     if (this.sun) {
       this.sun.castShadow = this.state.environment3D ? true : false
+      this.sun.intensity = this.state.environment3D ? this.sunIntensity / 100 : 0.5
     }
 
     this.map.update()
@@ -265,9 +268,15 @@ export class MapComponent implements OnInit {
     this.map.tilt = 0
     this.mapControls.tiltEnabled = false
 
+    this.mapControls.maxZoomLevel = 20; //reset max zoom level
+    this.mapControls.minZoomLevel = 10; //reset min zoom level
+    this.mapControls.setZoomLevel(15);
+    this.mapControls.maxZoomLevel = 15;
+
     this.state.environment3D = false
     Render.renderNetwork(this.map, this.networkData, this.state.environment3D) //trigger rerender
     this.setLights()
+    this.toggleLightControls();
   }
 
   /**
@@ -281,9 +290,20 @@ export class MapComponent implements OnInit {
     this.mapControls.maxTiltAngle = 60
     this.mapControls.tiltEnabled = true
 
+    this.mapControls.maxZoomLevel = 20; //reset max zoom level
+    this.mapControls.minZoomLevel = 10; //reset min zoom level
+    this.mapControls.setZoomLevel(17);
+    this.mapControls.minZoomLevel = 16;
+
+
     this.state.environment3D = true
     Render.renderNetwork(this.map, this.networkData, this.state.environment3D) //trigger rerender
     this.setLights()
+    this.toggleLightControls();
+  }
+
+  private toggleLightControls() {
+    document.getElementById('light-controls').style.display = this.state.environment3D ? "block" : "none"
   }
 
   private select(event: MouseEvent) {
@@ -311,6 +331,16 @@ export class MapComponent implements OnInit {
     if (this.state.dragState.distance > 10)
       this.state.dragState.dragged = true;
 
+  }
+
+  onLightIntensityChange(value: number) {
+    this.sunIntensity = value;
+    this.sun.intensity = this.sunIntensity / 100;
+    this.map.update()
+  }
+
+  onRotationAngleXChange(value: number) {
+    this.rotationAngleX = value
   }
 
 }

@@ -2,6 +2,17 @@
     <div id="map-container">
         <canvas id="map"></canvas>
         <div id="tooltip"></div>
+        <div id="light-controls">
+            <div>
+                <label>Sun Intensity</label>
+                <input type="range" min="1" max="100" [value]="sunIntensity" (input)="onLightIntensityChange($event.target.value)" class="slider" id="light-intensity">
+            </div>
+            <div>
+                <label>Sun Rotation</label>
+                <input type="range" min="-90" max="90" [value]="rotationAngleX" (input)="onRotationAngleXChange($event.target.value)" class="slider" id="light-rotation-x">
+            </div>
+
+        </div>
     </div>
     <app-node-map-info id="node-info"></app-node-map-info>
 </div>
