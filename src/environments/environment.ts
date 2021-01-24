@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   masterDataURL: 'http://localhost:3000',
-  masterDataViagensURL: 'http://localhost:5000'
+  masterDataViagensURL: 'https://localhost:5001'
 };
 
 /*

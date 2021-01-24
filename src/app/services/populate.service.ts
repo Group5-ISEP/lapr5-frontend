@@ -10,7 +10,8 @@ export class PopulateService {
   constructor(private http: HttpClient) { }
 
   upload(f: File) {
-    //console.log('Uploading file to masterDataViagens: ' + f.name);
-    return this.http.post(environment.masterDataViagensURL + '/api/importdata', f);
+    const formData = new FormData();
+    formData.append('file', f);
+    return this.http.post(environment.masterDataURL + '/api/importdata', formData);
   }
 }

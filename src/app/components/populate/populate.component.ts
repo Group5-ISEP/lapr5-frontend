@@ -25,8 +25,14 @@ export class PopulateComponent implements OnInit {
   }
 
   upload() {
-    this.populateService.upload(this.file);
-    this._snackBar.open("File sent", "Ok", { duration: 3000 });
+    this.populateService.upload(this.file).subscribe(
+      res => {
+        this._snackBar.open("File received", "Ok", { duration: 3000 });
+      },
+      err => {
+        this._snackBar.open("An error has ocurred uploading the file", "Ok", { duration: 3000 });
+        console.error(err);
+      });
   }
 
 }
