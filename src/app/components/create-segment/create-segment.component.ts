@@ -79,7 +79,7 @@ export class CreateSegmentComponent implements OnInit {
     this.distance = HaversineGeolocation.getDistanceBetween(c1, c2, 'm');
     
     var velocity = 30000/3600; // 30km/h
-    this.duration = this.distance / velocity;
+    this.duration = Math.round(this.distance / velocity);
     this.calculated = true;
   }
 
